@@ -1,0 +1,14 @@
+<form action="/api/users/web/documents" method="post" enctype="multipart/form-data">
+  <input type="file" name="document" />
+  {{!-- <input type="text" name="name" placeholder=nombre_heroe /> --}}                                      {{!  Borrar  }}         
+    <label for="fileOptions">profile/product/document</label>
+  <select id="fileInfo" name="fileInfo">
+    <option value="profiles">profile</option>
+    <option value="product">product</option>
+    <option value="identificacion">identificacion</option>
+    <option value="comprobanteDeDomicilio">comprobante de domicilio</option>
+    <option value="combrobanteDeEstadoDeCuenta">comprobante de estado de cuenta</option>
+
+  </select>
+  <br>
+   <input type=submit value=Submit>
