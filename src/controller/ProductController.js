@@ -2,7 +2,7 @@
 import { productService } from "../services/ProductService.js";
 import { isValidObjectId } from "mongoose";
 import { validationProducts } from "../utils/validation.js";
-import { productsModel } from "../dao/models/productsModel.js";           // Quitar
+
 ///import { io } from "../app.js";                                       // Revisar - porque no lo esta exportando?
 
 // Instanciates                                                         // Para la persistencia en FS?

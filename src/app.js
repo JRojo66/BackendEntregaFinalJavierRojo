@@ -10,8 +10,6 @@ import { router as productsRouter } from "./routes/productsRouter.js";
 import { router as cartRouter } from "./routes/cartRouter.js";
 import { router as viewsRouter } from "./routes/views.Router.js";
 import { router as sessionRouter } from "./routes/sessionRouter.js";
-import { router as mockingRouter } from "./routes/mokingRouter.js";
-import { router as loggerTestRouter } from "./routes/loggerTestRouter.js";
 import {router as passwordResetRouter} from "./routes/passwordResetRouter.js";
 import {router as usersRouter} from "./routes/usersRouter.js";
 import passport from "passport";
@@ -86,8 +84,6 @@ app.use(
 );
 app.use("/api/cart", cartRouter);
 app.use("/api/sessions", sessionRouter);
-app.use("/mockingproducts", mockingRouter);
-app.use("/loggerTest", loggerTestRouter);
 app.use("/api/passwordReset",passwordResetRouter);
 app.use("/api/users",usersRouter)
 

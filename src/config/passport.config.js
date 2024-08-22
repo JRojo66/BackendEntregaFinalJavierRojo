@@ -6,9 +6,6 @@ import { SECRET, generateHash, isValidPassword } from "../utils.js";
 import { userService } from "../services/UserService.js";
 import { cartService } from "../services/CartService.js";
 import { UserDTO, UserDTOfirstLettertoUpperCase } from "../dto/userDTO.js";
-import { validationLogin } from "../utils/validation.js";
-import { config } from '../config/config.js';
-
 
 const extractToken = (req) => {
   let token = null;

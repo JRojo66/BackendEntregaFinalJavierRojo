@@ -1,7 +1,6 @@
 import { describe, it, before, afterEach } from "mocha";
 import { expect } from "chai";
 import supertest from "supertest";
-import { UserManagerMONGO } from "../src/dao/UserManagerMONGO.js";
 import mongoose from "mongoose";
 import { isValidObjectId, ObjectId } from "mongoose";
 
@@ -11,7 +10,6 @@ describe("Test User and Cart creation. Test Add products to cart. Test purchase"
   this.timeout(10000);
 
   after(async function () {
-    this.dao = new UserManagerMONGO();
     // Find created user
     let mockUserToDelete = await mongoose.connection
       .collection("users")
@@ -33,7 +31,6 @@ describe("Test User and Cart creation. Test Add products to cart. Test purchase"
   });
 
   it("register must create user", async function () {
-    this.dao = new UserManagerMONGO();
     const mockUser = {
       name: "jorge",
       lastName: "Bergoglio",
@@ -63,7 +60,6 @@ describe("Test User and Cart creation. Test Add products to cart. Test purchase"
   });
 
   it("must login with jwt create cart and purchase", async function () {
-    this.dao = new UserManagerMONGO();
     let mockUserFindCart = await mongoose.connection
       .collection("users")
       .findOne({ email: "jorge@testzzz.com" });

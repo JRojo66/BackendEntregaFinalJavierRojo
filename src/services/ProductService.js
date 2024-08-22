@@ -30,16 +30,16 @@ class ProductService {
   };
   getAllProducts = async () => {
     return this.dao.getAll();
-  }
+  };
   getProductsPaginated = async (query, limit, page, sort) => {
     return this.dao.getPaginated(query, limit, page, sort);
-  }
+  };
   updateProducts = async (id, productData) => {
     return this.dao.update(id, productData);
-  }
+  };
   deleteProduct = async (productId) => {
     return this.dao.delete(productId);
-  }
+  };
 }
 
 export const productService = new ProductService(new ProductManager());

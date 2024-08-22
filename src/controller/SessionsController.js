@@ -1,12 +1,9 @@
-import { UserManagerMONGO as UserManager } from "../dao/UserManagerMONGO.js";
 import { SECRET } from "../utils.js";
 import jwt from "jsonwebtoken";
 import { UserDTO } from "../dto/userDTO.js";
 import { config } from "../config/config.js";
 import nodemailer from "nodemailer";
 import { userService } from "../services/UserService.js";
-
-const userManager = new UserManager();
 
 export class SessionsController {
   static redirectToMain = (req, res) => {
@@ -37,7 +34,7 @@ export class SessionsController {
       res.setHeader("Content-Type", "application/json");
       return res.status(400).json({ payload: "Enter email and password" });
     }
-    let user = await userManager.getBy({ email }); // Pasar a service
+    let user = await userService.getUsersBy({ email }); // Pasar a service
     if (!user)
       return res
         .status(400)
@@ -47,7 +44,7 @@ export class SessionsController {
     let token = jwt.sign(user, SECRET, { expiresIn: "1h" });
     res.cookie("codercookie", token, { httpOnly: true });
     // Record login time
-    await userManager.update({ email }, { last_connection: new Date() });
+    await userService.updateUser({ email }, { last_connection: new Date() });
     return res.status(200).json({
       userLogged: user,
       token,
@@ -59,7 +56,7 @@ export class SessionsController {
       const token = req.cookies.codercookie;
       const user = jwt.verify(token, SECRET);
       const email = user.email;
-      await userManager.update({ email }, { last_connection: new Date() });                                               //Pasar a userService
+      await userService.updateUser({ email }, { last_connection: new Date() });                                               //Pasar a userService
       res.clearCookie("codercookie");
       res.setHeader("Content-Type", "application/json");
       return res
@@ -80,7 +77,7 @@ export class SessionsController {
     if (!email) return res.status(400).send("Enter email");
     try {
       //Validate email exists
-      let user = await userManager.getBy({ email });
+      let user = await userService.getUsersBy({ email });
       if (!user) return res.status(400).send(`Mail not registered...!!!`);
       // create jwt
       let tokenpwr = jwt.sign(user, SECRET, { expiresIn: 3600 });
@@ -180,7 +177,7 @@ export class SessionsController {
   static premium = async (req, res) => {
     try {
       let uid = req.params.uid;
-      let user = await userManager.getBy({ _id: uid });
+      let user = await userService.getUsersBy({ _id: uid });
       console.log(user);
       if (user.role === "premium") {
         await userService.updateUser({ _id: uid }, { role: "user" });
@@ -222,7 +219,7 @@ export class SessionsController {
     }
     const reference = req.fileSavedPath + "/" + req.fileSavedName;
     try {
-      const user = await userManager.getBy({ _id: userId });
+      const user = await userService.getUsersBy({ _id: userId });
       let documents = user.documents;
       switch (req.fileDoc) {
         case "profile":
@@ -243,7 +240,7 @@ export class SessionsController {
           break;
         default:
       }
-      await userManager.update({ _id: userId }, { documents });
+      await userService.updateUser({ _id: userId }, { documents });
     } catch (error) {
       res.setHeader("Content-Type", "application/json");
       return res.status(500).json({
