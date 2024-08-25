@@ -12,7 +12,7 @@ import { router as viewsRouter } from "./routes/views.Router.js";
 import { router as sessionRouter } from "./routes/sessionRouter.js";
 import {router as passwordResetRouter} from "./routes/passwordResetRouter.js";
 import {router as usersRouter} from "./routes/usersRouter.js";
-import passport from "passport";
+import passport from "passport";  
 import { initPassport } from "./config/passport.config.js";
 import cookieParser from "cookie-parser";
 import { config } from "./config/config.js";

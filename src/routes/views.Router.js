@@ -1,13 +1,9 @@
 import { Router } from "express";
-import { CartManagerMONGO as CartManager } from "../dao/CartManagerMONGO.js";
 import { __dirname } from "../utils.js";
 import { ViewsController } from "../controller/ViewsController.js";
-import passport from "passport";
 import roleMiddleware from "../middleware/roleMiddleware.js";
 
 export const router = Router();
-
-const cartManager = new CartManager();
 
 router.get("/", ViewsController.home);
 router.get(

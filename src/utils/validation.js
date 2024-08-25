@@ -79,7 +79,6 @@ export const validationUser = (name, lastName, email, age, password) => {
   if (!email) {
     errors.push("email is required.");
   } else if (!regex.test(email)) {
-    console.log(typeof email);
     errors.push("email must be a valid email address");
   }
 
@@ -105,7 +104,6 @@ export const validationLogin = (email, password) => {
   if (!email) {
     errors.push("email is required.");
   } else if (!regex.test(email)) {
-    console.log(typeof email);
     errors.push("email must be a valid email address");
   }
   if (!password) {

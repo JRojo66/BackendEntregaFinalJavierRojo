@@ -4,7 +4,7 @@ import { stringify } from "querystring";
 import { dirname, join } from "path";
 import path from "path";
 
-export class CartManagerMEMORY {
+export class CartDaoMEMORY {
   #cart;
   #filePathCart;
   constructor(pathCart) {

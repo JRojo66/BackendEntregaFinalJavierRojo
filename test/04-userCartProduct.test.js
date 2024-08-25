@@ -3,8 +3,9 @@ import { expect } from "chai";
 import supertest from "supertest";
 import mongoose from "mongoose";
 import { isValidObjectId, ObjectId } from "mongoose";
+import { config } from '../src/config/config.js';
 
-const requester = supertest("http://localhost:8080");
+const requester = supertest(`${config.ROOT_URL}`);
 
 describe("Test User and Cart creation. Test Add products to cart. Test purchase", function () {
   this.timeout(10000);

@@ -13,13 +13,14 @@ export class CartController {
     try {
       let cart = await cartService.getAllCarts();
       if (req.query.limit) {
-        // Check if 'limit' exists in the request query
         const limit = Number(req.query.limit);
         if (isNaN(limit)) {
           res.setHeader("Content-Type", "application/json");
-          return res.status(400).json({ error: "The 'limit' parameter must be a number" });
+          return res
+            .status(400)
+            .json({ error: "The 'limit' parameter must be a number" });
         }
-        cart = cart.slice(0, limit); // Apply limit  if  valid
+        cart = cart.slice(0, limit);
       }
       res.setHeader("Content-Type", "application/json");
       return res.status(200).json(cart);
@@ -41,7 +42,6 @@ export class CartController {
 
   static getCartById = async (req, res) => {
     let cid = req.params.cid;
-    console.log(cid);
     if (!isValidObjectId(cid)) {
       res.setHeader("Content-Type", "application/json");
       return res.status(400).json({ error: "Pls, enter a valid id..." });
@@ -78,11 +78,11 @@ export class CartController {
       return res.status(400).json({ error: `Can't find product id ${pid}` });
     }
 
-    if(product.owner===req.user.email)
-      {
-        return res.status(401).json({ error: `Can't buy your own products... Doesn't make sense, ask Coderhouse why...` });
-      }
-
+    if (product.owner === req.user.email) {
+      return res.status(401).json({
+        error: `Can't buy your own products... Doesn't make sense, ask Coderhouse why...`,
+      });
+    }
 
     let productIndex = cart.products.findIndex((p) => p.product == pid);
 
@@ -105,14 +105,12 @@ export class CartController {
   };
 
   static updateCart = async (req, res) => {
-    // cid validations as ObjectId
     let { cid } = req.params;
     if (!isValidObjectId(cid)) {
       return res
         .status(500)
         .json({ error: `cart id must be a valid MongoDB _id` });
     }
-    // cart validation
     let cartExists;
     cartExists = await cartService.getCartBy({ _id: cid });
     if (!cartExists) {
@@ -121,7 +119,7 @@ export class CartController {
         .status(404)
         .json({ error: `There is no cart with id: ${cid}` });
     }
-    // Cart update
+
     let newProducts = req.body;
     const newCart = await cartService.updateCart(cid, newProducts);
     res.setHeader("Content-Type", "application/json");
@@ -131,16 +129,13 @@ export class CartController {
   static updateQty = async (req, res) => {
     // WARNING: the endpoint is very similar to "/:cid/product/:pid" and can be confused
     let { cid, pid } = req.params;
-    // cid and pid validations as ObjectId
     if (!isValidObjectId(cid) || !isValidObjectId(pid)) {
       return res
         .status(500)
         .json({ error: `cart and products id must be valid MongoDB _ids` });
     }
-    // product validation
     let exists;
     try {
-      // ** Volver acá con el productService
       exists = await productService.getProductBy({ _id: pid });
     } catch (error) {
       res.setHeader("Content-Type", "application/json");
@@ -155,7 +150,6 @@ export class CartController {
         .status(400)
         .json({ error: `There is no Product with id: ${pid}` });
     }
-    //cart validation
     let cartExists;
     cartExists = await cartService.getCartBy({ _id: cid });
     if (!cartExists) {
@@ -164,12 +158,10 @@ export class CartController {
         .status(404)
         .json({ error: `There is no cart with id: ${cid}` });
     }
-    // Validate qty
     let newQty = req.body.qty;
     if (typeof newQty !== "number") {
       return res.status(500).json({ error: `qty must be a number` });
     }
-    // Update qty
     try {
       let productExists = false;
       let cart = await cartService.getOneCartBy({ _id: cid });
@@ -185,10 +177,11 @@ export class CartController {
         });
       }
 
-if(product.owner===req.user.email)
-  {
-    return res.status(401).json({ error: `Can't buy your own products... Doesn't make sense, ask Coderhouse why...` });
-  }
+      if (product.owner === req.user.email) {
+        return res.status(401).json({
+          error: `Can't buy your own products... Doesn't make sense, ask Coderhouse why...`,
+        });
+      }
 
       let newProducts = { products: cart.products };
       const newCart = await cartService.updateCart(cid, newProducts);
@@ -203,17 +196,15 @@ if(product.owner===req.user.email)
   };
 
   static deleteProduct = async (req, res) => {
-    let { cid, pid } = req.params; // create a validation function
-    // cid and pid validations as ObjetcId
+    let { cid, pid } = req.params;
     if (!isValidObjectId(cid) || !isValidObjectId(pid)) {
       return res
         .status(400)
         .json({ error: `cart and products id be valid Mongo ObjectIds` });
     }
-    // product validation in products
     let existsInProducts;
     try {
-      existsInProducts = await productService.getProductBy({ _id: pid }); // Volver con Product services
+      existsInProducts = await productService.getProductBy({ _id: pid });
     } catch (error) {
       res.setHeader("Content-Type", "application/json");
       return res.status(500).json({
@@ -227,7 +218,6 @@ if(product.owner===req.user.email)
         .status(404)
         .json({ error: `There is no Product with id: ${pid}` });
     }
-    // cart validation
     let cartExists;
     try {
       cartExists = await cartService.getOneCartBy({ _id: cid });
@@ -244,7 +234,6 @@ if(product.owner===req.user.email)
         .status(404)
         .json({ error: `There is no cart with id: ${cid}` });
     }
-    // product validation in cart
     let productIndex = cartExists.products.findIndex((p) => p.product == pid);
     if (productIndex === -1) {
       res.setHeader("Content-Type", "application/json");
@@ -252,7 +241,6 @@ if(product.owner===req.user.email)
         .status(404)
         .json({ error: `There is no product ${pid} in cart ${cid}` });
     }
-    // Delete product in cart
     try {
       let cartUpdated = await cartService.deleteProductInCart(cid, pid);
       res.json(`${pid} deleted from cart: ${cid}`);
@@ -266,13 +254,11 @@ if(product.owner===req.user.email)
 
   static deleteAllProductsInCart = async (req, res) => {
     let { cid } = req.params;
-    // cid validation as objectId
     if (!isValidObjectId(cid)) {
       return res
         .status(400)
         .json({ error: `cart id must be valid Mongo ObjectId` });
     }
-    // cart existence validation
     let cartExists;
     try {
       cartExists = await cartService.getCartBy({ _id: cid });
@@ -293,20 +279,5 @@ if(product.owner===req.user.email)
     const newCart = await cartService.updateCart(cid, newProducts);
     res.setHeader("Content-Type", "application/json");
     return res.json(`Products in cart ${cid} were deleted`);
-  };
-
-  // Pasar a TicketController
-
-  static addNewTicket = async (req, res) => {
-    try {
-      console.log("yyy");
-      //let ticket = await TicketManager.add()
-    } catch (error) {
-      res.setHeader("Content-Type", "application/json");
-      return res.status(500).json({
-        error: `Unexpected server error - Try again later or contact admninistrator`,
-        detail: `${error.message}`,
-      });
-    }
   };
 }

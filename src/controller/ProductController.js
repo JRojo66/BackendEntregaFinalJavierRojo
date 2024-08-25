@@ -2,6 +2,7 @@
 import { productService } from "../services/ProductService.js";
 import { isValidObjectId } from "mongoose";
 import { validationProducts } from "../utils/validation.js";
+import { config } from "../../src/config/config.js";
 
 ///import { io } from "../app.js";                                       // Revisar - porque no lo esta exportando?
 
@@ -20,7 +21,6 @@ import { validationProducts } from "../utils/validation.js";
 
 export class ProductController {
   static getProducts = async (req, res) => {
-    // Variables definition
     let pquery;
     let limit = 10;
     let page = 1;
@@ -29,25 +29,26 @@ export class ProductController {
     let prevLink = "";
     let nextLink = "";
 
-    // limit validation
     if (req.query.limit) {
       limit = Number(req.query.limit);
       if (isNaN(limit)) {
         res.setHeader("Content-Type", "application/json");
-        return res.status(400).json({ error: "The 'limit' parameter must be a number" });
+        return res
+          .status(400)
+          .json({ error: "The 'limit' parameter must be a number" });
       }
     }
 
-    // page validation
     if (req.query.page) {
       page = Number(req.query.page);
       if (isNaN(page)) {
         res.setHeader("Content-Type", "application/json");
-        return res.status(400).json({ error: "The 'page' parameter must be a number" });
+        return res
+          .status(400)
+          .json({ error: "The 'page' parameter must be a number" });
       }
     }
 
-    // query validation
     if (req.query.query) {
       let queryObject = {};
       try {
@@ -64,13 +65,13 @@ export class ProductController {
         query = queryObject;
       } else {
         res.setHeader("Content-Type", "application/json");
-        return res.status(400).json({ error: "The 'query' parameter must be a JSON" });
+        return res
+          .status(400)
+          .json({ error: "The 'query' parameter must be a JSON" });
       }
     }
 
-    // sort validations
     if (req.query.sort) {
-      // Validate sort - Que mande propiedades existentes
       let sortObject = {};
       try {
         sortObject = JSON.parse(req.query.sort);
@@ -85,18 +86,23 @@ export class ProductController {
         sort = sortObject;
       } else {
         res.setHeader("Content-Type", "application/json");
-        return res.status(400).json({ error: "The 'sort' parameter must be a JSON" });
+        return res
+          .status(400)
+          .json({ error: "The 'sort' parameter must be a JSON" });
       }
     }
 
-    // Query
-    pquery = await productService.getProductsPaginated(query, limit, page, sort);
+    pquery = await productService.getProductsPaginated(
+      query,
+      limit,
+      page,
+      sort
+    );
 
-    // Links to prevPage y nextPage
     if (!pquery.hasPrevPage) {
       prevLink = null;
     } else {
-      prevLink = `http://localhost:8080/api/products?page=${
+      prevLink = `${config.ROOT_URL}/api/products?page=${
         page - 1
       }&limit=${limit}&query=${encodeURIComponent(
         JSON.stringify(query)
@@ -106,14 +112,13 @@ export class ProductController {
     if (!pquery.hasNextPage) {
       nextLink = null;
     } else {
-      nextLink = `http://localhost:8080/api/products?page=${
+      nextLink = `${config.ROOT_URL}/api/products?page=${
         page + 1
       }&limit=${limit}&query=${encodeURIComponent(
         JSON.stringify(query)
       )}&sort=${encodeURIComponent(JSON.stringify(sort))}`;
     }
 
-    // Return
     res.setHeader("Content-Type", "application/json");
     return res.status(200).json({
       status: 200,
@@ -135,11 +140,11 @@ export class ProductController {
       return res.json({ error: "Pls, enter a numeric id..." });
     }
     try {
-      let product = await productService.getProductBy({ id: id });          
+      let product = await productService.getProductBy({ id: id });
       if (!product) {
         return res.json({ message: `id ${id} not found` });
       } else {
-        res.json({ product, user: req.user }); // returns user for DesafioComplementario2
+        res.json({ product, user: req.user });
       }
     } catch {
       return res.json({ error: "Unkwown error params" });
@@ -155,9 +160,10 @@ export class ProductController {
       status,
       stock,
       category,
-      owner,
       thumbnails,
     } = req.body;
+
+    let owner = req.user.email;
 
     const errors = validationProducts(
       title,
@@ -167,15 +173,13 @@ export class ProductController {
       status,
       stock,
       category,
-      // do not validate owner. if owner is not specified, owner is "admin"
       thumbnails
     );
+
     if (errors.length > 0) {
       res.setHeader("Content-Type", "application/json");
-      return res.status(400).json({error: errors }); // Return an array of validation errors
+      return res.status(400).json({ error: errors });
     }
-
-    // Validate product exists
     let exists;
     try {
       exists = await productService.getProductBy({ code });
@@ -183,7 +187,6 @@ export class ProductController {
       res.setHeader("Content-Type", "application/json");
       return res.status(500).json({
         error: `Unexpected server error - Try again later or contact admninistrator`,
-        //detail: `${error.message}`,
       });
     }
     if (exists) {
@@ -191,10 +194,6 @@ export class ProductController {
       return res
         .status(400)
         .json({ error: `Product with code ${code} already exists` });
-    }    
-    // if owner is not specified, owner is "admin"
-    if(!owner){
-      owner="admin"
     }
 
     try {
@@ -210,16 +209,14 @@ export class ProductController {
         thumbnails,
       });
       let newProduct = await productService.getAllProducts();
-        req.serverSocket.emit("newProduct", title);
-        res.setHeader("Content-Type", "application/json");
-        return res.status(200).json({payload: productAdded});
+      req.serverSocket.emit("newProduct", title);
+      res.setHeader("Content-Type", "application/json");
+      return res.status(200).json({ payload: productAdded });
     } catch (error) {
       res.setHeader("Content-Type", "application/json");
-      res
-        .status(500)
-        .json({
-          error: `Unexpected server error - Try again later or contact admninistrator`,
-        });
+      res.status(500).json({
+        error: `Unexpected server error - Try again later or contact admninistrator`,
+      });
     }
   };
 
@@ -240,7 +237,9 @@ export class ProductController {
     if (updatedProduct.code) {
       let exist;
       try {
-        exist = await productService.getProductBy({ code: updatedProduct.code });
+        exist = await productService.getProductBy({
+          code: updatedProduct.code,
+        });
         if (exist) {
           return res.status(400).json({
             error: `A product with the code ${updatedProduct.code} already exists`,
@@ -254,18 +253,18 @@ export class ProductController {
     }
 
     try {
-      let product = await productService.getProductBy({_id: pid})
-      if(req.user.email !== product.owner && req.user.name !== "admin"){
-        return res.json({ payload: `Only the product owner can delete this product...!!!` });
+      let product = await productService.getProductBy({ _id: pid });
+      if (req.user.email !== product.owner && req.user.name !== "admin") {
+        return res.json({
+          payload: `Only the product owner can delete this product...!!!`,
+        });
       }
       const products = await productService.updateProducts(pid, updatedProduct);
       return res.json(products);
     } catch (error) {
-      res
-        .status(300)
-        .json({
-          error: `Unexpected server error - Try again later or contact admninistrator`,
-        });
+      res.status(300).json({
+        error: `Unexpected server error - Try again later or contact admninistrator`,
+      });
     }
   };
 
@@ -277,20 +276,24 @@ export class ProductController {
       });
     }
     try {
-      let product = await productService.getProductBy({_id: pid})
-      if(req.user.email !== product.owner && req.user.name !== "admin"){
-        return res.json({ payload: `Only the product owner can delete this product...!!!` });
+      let product = await productService.getProductBy({ _id: pid });
+      if (req.user.email !== product.owner && req.user.name !== "Admin") {
+        return res.json({
+          payload: `Only the product owner can delete this product...!!!`,
+        });
       }
-      if (product){               
+      if (product) {
         await productService.deleteProduct(pid);
-        req.serverSocket.emit("deletedProduct", await productService.getAllProducts());
+        req.serverSocket.emit(
+          "deletedProduct",
+          await productService.getAllProducts()
+        );
         return res.json({ payload: `Product ${pid} deleted` });
-      }
-      else {
+      } else {
         return res.status(404).json({ error: `${pid} inexistent` });
       }
     } catch (error) {
-      return res.status(300).json({ error: `Error deleting product ${pid}`});        //  ,error: ${error}
+      return res.status(300).json({ error: `Error deleting product ${pid}` });
     }
   };
 }

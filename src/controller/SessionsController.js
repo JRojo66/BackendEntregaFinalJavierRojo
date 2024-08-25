@@ -7,7 +7,7 @@ import { userService } from "../services/UserService.js";
 
 export class SessionsController {
   static redirectToMain = (req, res) => {
-    res.redirect("http://localhost:8080/");
+    res.redirect(`${config.ROOT_URL}`);
   };
 
   static register = async (req, res) => {
@@ -54,16 +54,20 @@ export class SessionsController {
   static logoutJWT = async (req, res) => {
     try {
       const token = req.cookies.codercookie;
+      if(!token){
+        res.setHeader('Content-Type','application/json');
+        return res.status(400).json({error:`User is not logged...!!!`})
+      }
       const user = jwt.verify(token, SECRET);
       const email = user.email;
-      await userService.updateUser({ email }, { last_connection: new Date() });                                               //Pasar a userService
+      await userService.updateUser({ email }, { last_connection: new Date() });
       res.clearCookie("codercookie");
       res.setHeader("Content-Type", "application/json");
       return res
         .status(200)
         .json({ payload: `Bye ${user.name}, hope to see you back soon!` });
     } catch (error) {
-      console.log(error);
+      console.log(error);                                                                     // Logger?
       res.setHeader("Content-Type", "application/json");
       return res.status(500).json({
         error: `Unexpected error - Try later or contact administrator...!!!`,
@@ -73,17 +77,13 @@ export class SessionsController {
 
   static passwordReset = async (req, res) => {
     let { email } = req.body;
-    // Validates email not empty
     if (!email) return res.status(400).send("Enter email");
     try {
-      //Validate email exists
       let user = await userService.getUsersBy({ email });
       if (!user) return res.status(400).send(`Mail not registered...!!!`);
-      // create jwt
       let tokenpwr = jwt.sign(user, SECRET, { expiresIn: 3600 });
       res.cookie("resetPasswordcookie", tokenpwr, { httpOnly: true });
       const userjwt = jwt.verify(tokenpwr, SECRET, { algorithms: ["HS256"] });
-
       // Send email
       const transporter = nodemailer.createTransport({
         service: "gmail",
@@ -97,7 +97,7 @@ export class SessionsController {
         from: "rojozon javier.rojo66@gmail.com",
         to: user.email,
         subject: "Reset your password",
-        html: `<a href="http://localhost:8080/passwordResetForm/?token=${tokenpwr}">Reset your password</a>`,
+        html: `<a href="${config.ROOT_URL}/passwordResetForm/?token=${tokenpwr}">Reset your password</a>`,
       });
       res.setHeader("Content-Type", "application/json");
       return res.status(200).json({
@@ -142,20 +142,6 @@ export class SessionsController {
     return res.status(200).json({ payload: req.user });
   };
 
-  static logout = (req, res) => {
-    req.session.destroy((e) => {
-      if (e) {
-        res.setHeader("Content-Type", "application/json");
-        return res.status(500).json({
-          error: `Unexpected server error - Try again later or contact admninistrator`,
-          detalle: `${error.message}`,
-        });
-      }
-    });
-    res.setHeader("Content-Type", "application/json");
-    return res.status(200).json({ payload: "Successful Logout...!!!" });
-  };
-
   static current = (req, res) => {
     let userSessions = req.session.user;
     userSessions = new UserDTO(userSessions);
@@ -178,7 +164,6 @@ export class SessionsController {
     try {
       let uid = req.params.uid;
       let user = await userService.getUsersBy({ _id: uid });
-      console.log(user);
       if (user.role === "premium") {
         await userService.updateUser({ _id: uid }, { role: "user" });
         res.setHeader("Content-Type", "application/json");
@@ -186,16 +171,24 @@ export class SessionsController {
           .status(200)
           .json({ payload: `User ${user.email} is now user` });
       }
-      if (user.role === "user" && user.documents[0].reference!=="" && user.documents[1].reference!=="" && user.documents[2].reference!=="") {
-        console.log("user.documents[0]",user.documents[0].reference);                                                    // clg
+      if (
+        user.role === "user" &&
+        user.documents[0].reference !== "" &&
+        user.documents[1].reference !== "" &&
+        user.documents[2].reference !== ""
+      ) {
         await userService.updateUser({ _id: uid }, { role: "premium" });
         res.setHeader("Content-Type", "application/json");
         return res
           .status(200)
           .json({ payload: `User ${user.email} is now premium` });
       } else {
-        res.setHeader('Content-Type','application/json');
-        return res.status(400).json({error:`Role is not premium nor user or missing or incomplete documents...!!!`})
+        res.setHeader("Content-Type", "application/json");
+        return res
+          .status(400)
+          .json({
+            error: `Role is not premium nor user or missing or incomplete documents...!!!`,
+          });
       }
     } catch (error) {
       res.setHeader("Content-Type", "application/json");
@@ -208,9 +201,9 @@ export class SessionsController {
 
   static addDocument = async (req, res) => {
     let userId;
-    if(!req.fileDoc){
-      res.setHeader('Content-Type','application/json');
-      return res.status(400).json({error:`Choose file and try again...!!!`})
+    if (!req.fileDoc) {
+      res.setHeader("Content-Type", "application/json");
+      return res.status(400).json({ error: `Choose file and try again...!!!` });
     }
     if ((req.params.uid = "web")) {
       userId = req.user._id;
@@ -225,13 +218,11 @@ export class SessionsController {
         case "profile":
           break;
         case "product":
-          console.log(req.fileDoc);
           break;
         case "identification":
           documents[0].reference = reference;
           break;
         case "addressProof":
-          console.log(req.fileDoc);
           documents[1].reference = reference;
           break;
         case "bankStatement":

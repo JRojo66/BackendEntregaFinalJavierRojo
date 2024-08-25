@@ -5,7 +5,7 @@ import { dirname, join } from "path";
 import path from "path";
 
 // Codigo
-export class ProductManagerMEMORY {
+export class ProductDaoMEMORY {
   #products;
   #filePath;
   constructor(pathProducts) {

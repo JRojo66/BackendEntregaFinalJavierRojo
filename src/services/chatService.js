@@ -1,4 +1,4 @@
-import { ChatManagerMONGO as ChatManager } from "../dao/ChatManagerMONGO.js";
+import { ChatDaoMONGO as ChatDao } from "../dao/ChatDaoMONGO.js";
 
 class ChatService {
   constructor(dao) {
@@ -9,4 +9,4 @@ class ChatService {
   };
 }
 
-export const chatService = new ChatService(new ChatManager());
+export const chatService = new ChatService(new ChatDao());

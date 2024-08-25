@@ -1,0 +1,14 @@
+{"level":"error","message":"{\n     \"title\": \"Error creating ticket\",\n     \"name\": \"ReferenceError\",\n     \"message\": \"config is not defined\",\n     \"stack\": \"ReferenceError: config is not defined\\n    at createTicket (file:///C:/Documents/Docus/Documents/Nueva_etapa/IT/Coderhouse/Backend/EntregaFinal/src/controller/TicketController.js:97:17)\\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\"\n}"}
+{"level":"error","message":"{\n     \"title\": \"Error creating ticket\",\n     \"name\": \"TypeError\",\n     \"message\": \"Cannot read properties of undefined (reading '0')\",\n     \"stack\": \"TypeError: Cannot read properties of undefined (reading '0')\\n    at createTicket (file:///C:/Documents/Docus/Documents/Nueva_etapa/IT/Coderhouse/Backend/EntregaFinal/src/controller/TicketController.js:83:41)\\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\"\n}"}
+{"level":"error","message":"Parse error on line 13:\n...{product.thumbnails.0}}\" alt={{title}} /\n-----------------------^\nExpecting 'ID', got 'NUMBER'"}
+{"level":"error","message":"Parse error on line 13:\n...{product.thumbnails.0}}\" alt={{title}} /\n-----------------------^\nExpecting 'ID', got 'NUMBER'"}
+{"level":"error","message":"Parse error on line 13:\n...{product.thumbnails.0}}\" alt={{title}} /\n-----------------------^\nExpecting 'ID', got 'NUMBER'"}
+{"level":"error","message":"Parse error on line 13:\n...{product.thumbnails.0}}\" alt={{title}} /\n-----------------------^\nExpecting 'ID', got 'NUMBER'"}
+{"level":"error","message":"Parse error on line 13:\n...{product.thumbnails.0}}\" alt={{title}} /\n-----------------------^\nExpecting 'ID', got 'NUMBER'"}
+{"level":"error","message":"Parse error on line 13:\n...{product.thumbnails.0}}\" alt={{title}} /\n-----------------------^\nExpecting 'ID', got 'NUMBER'"}
+{"level":"error","message":"Parse error on line 13:\n...{product.thumbnails.0}}\" alt={{title}} /\n-----------------------^\nExpecting 'ID', got 'NUMBER'"}
+{"level":"error","message":"Parse error on line 13:\n...<img src=\"{{product.thumbnails[0]}}\" alt\n-----------------------^\nExpecting 'ID', got 'INVALID'"}
+{"level":"error","message":"Parse error on line 13:\n...{product.thumbnails.0}}\" alt={{title}} /\n-----------------------^\nExpecting 'ID', got 'NUMBER'"}
+{"level":"error","message":"Parse error on line 13:\n...<img src=\"{{product.thumbnails[0]}\" alt=\n-----------------------^\nExpecting 'ID', got 'INVALID'"}
+{"level":"error","message":"Parse error on line 13:\n...<img src=\"{{product.thumbnails[0]}\" alt=\n-----------------------^\nExpecting 'ID', got 'INVALID'"}
+{"level":"error","message":"Parse error on line 13:\n...<img src=\"{{product.thumbnails[0]}\"/>\r \n-----------------------^\nExpecting 'ID', got 'INVALID'"}

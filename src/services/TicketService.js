@@ -1,4 +1,4 @@
-import { TicketManagerMONGO as TicketManager } from "../dao/TicketManagerMONGO.js";
+import { TicketDaoMONGO as TicketDao } from "../dao/TicketDaoMONGO.js";
 
 class TicketService {
   constructor(dao) {
@@ -13,4 +13,4 @@ class TicketService {
     return this.dao.update(code, date);
   };
 }
-export const ticketService = new TicketService(new TicketManager());
+export const ticketService = new TicketService(new TicketDao());

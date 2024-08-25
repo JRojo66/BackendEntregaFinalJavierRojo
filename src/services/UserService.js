@@ -1,4 +1,4 @@
-import { UserManagerMONGO as UserManager } from "../dao/UserManagerMONGO.js";
+import { UserDaoMONGO as UserDao } from "../dao/UserDaoMONGO.js";
 
 class UserService {
   constructor(dao) {
@@ -16,4 +16,4 @@ class UserService {
     return this.dao.update(search, update);
   };
 }
-export const userService = new UserService(new UserManager());
+export const userService = new UserService(new UserDao());

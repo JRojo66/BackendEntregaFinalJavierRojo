@@ -7,30 +7,24 @@ export class PasswordResetController {
     try {
       const { token, newPassword } = req.body;
 
-      // Validate el token
       let decoded = jwt.verify(token, SECRET);
       const email = decoded.email;
       const uid = decoded._id;
       if (!decoded) {
         res.setHeader("Content-Type", "application/json");
-        return res
-          .status(401)
-          .json({
-            error: `We were unable to validate your credentials. Try againg later!!!`,
-          });
+        return res.status(401).json({
+          error: `We were unable to validate your credentials. Try againg later!!!`,
+        });
       }
       let user = await userService.getUsersBy({ email });
       const oldPassword = user.password;
       if (isValidPassword(newPassword, oldPassword)) {
         res.setHeader("Content-Type", "application/json");
-        return res
-          .status(401)
-          .json({
-            error: `New password must be different than the previous one...`,
-          });
+        return res.status(401).json({
+          error: `New password must be different than the previous one...`,
+        });
       }
       const password = generateHash(newPassword);
-      console.log("new password hashed: ", password);
       await userService.updateUser({ _id: uid }, { password: password });
 
       res.setHeader("Content-Type", "application/json");
@@ -43,14 +37,11 @@ export class PasswordResetController {
         res.setHeader("Content-Type", "application/json");
         return res.status(401).json({ Error: "Time out... Reset again!!!" });
       } else {
-        console.error("Error :", error.message);                              // Log the error message
+        console.error("Error :", error.message); // Log the error message
         res.setHeader("Content-Type", "application/json");
-        return res
-          .status(500)
-          .json({
-            Error:
-              "Unexpected error - Try later or contact administrator...!!!",
-          });
+        return res.status(500).json({
+          Error: "Unexpected error - Try later or contact administrator...!!!",
+        });
       }
     }
   };

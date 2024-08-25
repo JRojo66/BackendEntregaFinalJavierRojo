@@ -1,4 +1,4 @@
-import { CartManagerMONGO as CartManager } from "../dao/CartManagerMONGO.js";
+import { CartDaoMONGO as CartDao } from "../dao/CartDaoMONGO.js";
 
 class CartService {
   constructor(dao) {
@@ -24,4 +24,4 @@ class CartService {
   };
 }
 
-export const cartService = new CartService(new CartManager());
+export const cartService = new CartService(new CartDao());

@@ -5,7 +5,7 @@ export function productArguments(title, description, code, price, status, stock,
     return `-invalid arguments:
 Mandatory arguments:
     - title: String. ${title} received
-    ... COMPLETAR CON LOS DEMAS ARGUMENTOS
+    ... COMPLETE WITH OTHER ARGUMENTS
 Optional arguments:
     -alias, powers, team, y publisher. Se recibió: ${JSON.stringify(description, code, price, status, stock, category, thumbnails)}
 

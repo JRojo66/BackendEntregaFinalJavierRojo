@@ -26,13 +26,11 @@ export const initPassport = () => {
       async (req, username, password, done) => {
         try {
           let { name, lastName, age } = req.body;
-          //Validate existence
           let exists = await userService.getUsersBy({ email: username });
           if (exists) {
             return done(null, false);
           }
           password = generateHash(password);
-          // Add User
           let newCart = await cartService.addCart();
           let newUser = {
             name,
@@ -63,12 +61,10 @@ export const initPassport = () => {
       },
       async (username, password, done) => {
         try {
-          // Validate existence
           let user = await userService.getUsersBy({ email: username });
           if (!user || !user.password) {
             return done(null, false);
           }
-          // Validate password
           if (!isValidPassword(password, user.password)) {
             return done(null, false);
           }
@@ -115,7 +111,7 @@ export const initPassport = () => {
   );
 
   passport.use(
-    "current", // renombrar current para el desafio
+    "current",
     new passportJWT.Strategy(
       {
         secretOrKey: SECRET,
@@ -124,7 +120,6 @@ export const initPassport = () => {
         ]),
       },
       async (tokenContent, done) => {
-        //a tokenContent is commonly named user, since it has usser data
         try {
           return done(null, tokenContent);
         } catch (error) {

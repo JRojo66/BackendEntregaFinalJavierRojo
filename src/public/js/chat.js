@@ -12,7 +12,7 @@ Swal.fire({
 
     let inputMessage = document.getElementById("message");
     let divMessages = document.getElementById("messages");
-    inputMessage.focus();                        // Holds position when page is refreshed
+    inputMessage.focus();
 
     const socket = io();
 
@@ -36,7 +36,6 @@ Swal.fire({
     })
     inputMessage.addEventListener("keyup", e=>{
         e.preventDefault();
-        //console.log(e, e.target.value).trim();
         if (e.code ==="Enter" && e.target.value.trim().length>0){
             socket.emit("message", chatName, e.target.value.trim())
             e.target.value = ""; 
@@ -47,6 +46,6 @@ Swal.fire({
         divMessages.innerHTML+=`<span class="message"><p><strong>${chatName}</strong> says <i>${message}</i></p></span>`
         divMessages.scrollTop = divMessages.scrollHeight;
     })
-}) //end then sweetAlert
+})
 
 

@@ -1,4 +1,4 @@
-import { ProductManagerMONGO as ProductManager } from "../dao/ProductManagerMONGO.js";
+import { ProductDaoMONGO as ProductDao } from "../dao/ProductDaoMONGO.js";
 
 class ProductService {
   constructor(dao) {
@@ -42,4 +42,4 @@ class ProductService {
   };
 }
 
-export const productService = new ProductService(new ProductManager());
+export const productService = new ProductService(new ProductDao());

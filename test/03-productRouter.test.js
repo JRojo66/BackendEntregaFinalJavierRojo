@@ -1,8 +1,9 @@
 import { describe, it, before, afterEach } from "mocha";
 import { expect } from "chai";
 import supertest from "supertest";
+import { config } from '../src/config/config.js';
 
-const requester = supertest("http://localhost:8080");
+const requester = supertest(`${config.ROOT_URL}`);
 
 describe("Test get products from protected route", function () {
   this.timeout(10000);
@@ -10,8 +11,8 @@ describe("Test get products from protected route", function () {
 
   it("must login user and return COOKIE", async function () {
     const mockUser = {
-      email: "adminCoder@coder.com",
-      password: "adminCod3r123", // ** ???
+      email: config.ADMIN_EMAIL,
+      password: config.ADMIN_PASS,
     };
     const result = await requester
       .post("/api/sessions/loginjwt")

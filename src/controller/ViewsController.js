@@ -2,6 +2,9 @@ import { productService } from "../services/ProductService.js";
 import { cartService } from "../services/CartService.js";
 import jwt from "jsonwebtoken";
 import { SECRET } from "../utils.js";
+//import { CartManagerMONGO as CartManager } from "../dao/CartManagerMONGO.js";
+
+//let cartManager = new CartManager();
 
 export class ViewsController {
   static home = async (req, res) => {
@@ -47,10 +50,10 @@ export class ViewsController {
       res.setHeader("Content-Type", "text/html");
       res.status(200).render("realtime", { rtproducts });
     } catch (error) {
-      console.log(error);
+      console.log(error); //Logger?
       res.setHeader("Content-Type", "application/json");
       return res.status(500).json({
-        error: `Error inesperado en el servidor - Intente más tarde, o contacte a su administrador`,
+        error: `Unexpected server error - Try again later or contact admninistrator`,
       });
     }
   };
@@ -58,8 +61,8 @@ export class ViewsController {
   static getCartById = async (req, res) => {
     let { cid } = req.params;
     let token = req.cookies["codercookie"];
-    let user = jwt.verify(token, SECRET); // For sessions req.session.user;
-    let cart = await cartService.getProductBy({ _id: cid });
+    let user = jwt.verify(token, SECRET);
+    let cart = await cartService.getCartBy({ _id: cid });
     res.setHeader("Content-Type", "text/html");
     return res.status(200).render("cart", { cart, user });
   };
@@ -95,7 +98,7 @@ export class ViewsController {
   static logout = async (req, res) => {
     req.session.destroy((e) => {
       if (e) {
-        console.log(error);
+        console.log(error); // logger
         res.setHeader("Content-Type", "application/json");
         return res.status(500).json({
           error: `Unexpected server error - Try again later or contact admninistrator`,

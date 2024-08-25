@@ -1,6 +1,6 @@
 import { userModel } from "./models/userModel.js";
 
-export class UserManagerMONGO {
+export class UserDaoMONGO {
   create = async (user) => {
     return await userModel.create(user);
   };
@@ -9,9 +9,7 @@ export class UserManagerMONGO {
     return await userModel.findOne(filter).lean();
   };
 
-  update = async(search, update)=>{
-    return await userModel.findOneAndUpdate(search, update)
-  }
-
-  
+  update = async (search, update) => {
+    return await userModel.findOneAndUpdate(search, update);
+  };
 }

@@ -32,6 +32,5 @@ router.get(
   passport.authenticate("github", { failureRedirect: "/api/sessions/error" }),
   SessionsController.callBackGitHub
 );
-router.get("/logout", SessionsController.logout);
 router.get("/logoutJWT", SessionsController.logoutJWT);
-router.get("/current", SessionsController.current); // Route get user logged in sessions and JWT
+router.get("/current", SessionsController.current);

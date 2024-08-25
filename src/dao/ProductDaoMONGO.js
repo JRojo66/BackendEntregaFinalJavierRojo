@@ -1,12 +1,7 @@
-// Imports
 import { productsModel } from "./models/productsModel.js";
 
-// Code
-export class ProductManagerMONGO {
+export class ProductDaoMONGO {
 
-  // CRUD - Create, Read, Update, Delete
-
-  // Create
   add = async ({
     title,
     description,
@@ -32,7 +27,6 @@ export class ProductManagerMONGO {
     return await productsModel.create(productAdded);
   };
 
-    // Read
     getAll = async () => {
       return await productsModel.find().lean();
     };
@@ -50,7 +44,6 @@ export class ProductManagerMONGO {
       return await productsModel.findOne(filter).lean();
     };
 
-  // Update
   update = async (id, productData) => {
     return await productsModel.findByIdAndUpdate(id, productData, {
       runValidators: true,
@@ -58,7 +51,6 @@ export class ProductManagerMONGO {
     });
   }
 
-  // Delete
   async delete(productId) {
     return await productsModel.deleteOne({ _id: productId });
   }
