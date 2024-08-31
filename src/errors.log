@@ -12,3 +12,41 @@
 {"level":"error","message":"Parse error on line 13:\n...<img src=\"{{product.thumbnails[0]}\" alt=\n-----------------------^\nExpecting 'ID', got 'INVALID'"}
 {"level":"error","message":"Parse error on line 13:\n...<img src=\"{{product.thumbnails[0]}\" alt=\n-----------------------^\nExpecting 'ID', got 'INVALID'"}
 {"level":"error","message":"Parse error on line 13:\n...<img src=\"{{product.thumbnails[0]}\"/>\r \n-----------------------^\nExpecting 'ID', got 'INVALID'"}
+{"level":"error","message":"Unknown authentication strategy \"login\""}
+{"level":"error","message":"req is not defined"}
+{"level":"error","message":"req is not defined"}
+{"level":"error","message":"req is not defined"}
+{"level":"error","message":"req is not defined"}
+{"level":"error","message":"req is not defined"}
+{"level":"error","message":"req is not defined"}
+{"level":"error","message":"userLogged is not defined"}
+{"level":"error","message":"{\n     \"title\": \"Error connecting to DB \",\n     \"name\": \"Error\",\n     \"message\": \"querySrv ETIMEOUT _mongodb._tcp.jr.rdtaukg.mongodb.net\",\n     \"stack\": \"Error: querySrv ETIMEOUT _mongodb._tcp.jr.rdtaukg.mongodb.net\\n    at QueryReqWrap.onresolve [as oncomplete] (node:internal/dns/promises:291:17)\"\n}"}
+{"level":"error","message":"{\n     \"title\": \"Error connecting to DB \",\n     \"name\": \"Error\",\n     \"message\": \"querySrv ETIMEOUT _mongodb._tcp.jr.rdtaukg.mongodb.net\",\n     \"stack\": \"Error: querySrv ETIMEOUT _mongodb._tcp.jr.rdtaukg.mongodb.net\\n    at QueryReqWrap.onresolve [as oncomplete] (node:internal/dns/promises:291:17)\"\n}"}
+{"level":"error","message":"{\n     \"title\": \"Error connecting to DB \",\n     \"name\": \"Error\",\n     \"message\": \"querySrv ETIMEOUT _mongodb._tcp.jr.rdtaukg.mongodb.net\",\n     \"stack\": \"Error: querySrv ETIMEOUT _mongodb._tcp.jr.rdtaukg.mongodb.net\\n    at QueryReqWrap.onresolve [as oncomplete] (node:internal/dns/promises:291:17)\"\n}"}
+{"level":"error","message":"loginStrategy is not defined"}
+{"level":"error","message":"Cannot read properties of undefined (reading 'loginStrategy')"}
+{"level":"error","message":"Cannot read properties of undefined (reading 'loginStrategy')"}
+{"level":"error","message":"Cannot read properties of undefined (reading 'loginStrategy')"}
+{"level":"error","message":"Cannot read properties of undefined (reading 'loginStrategy')"}
+{"level":"error","message":"Cannot read properties of undefined (reading 'loginStrategy')"}
+{"level":"error","message":"Cannot read properties of undefined (reading 'loginStrategy')"}
+{"level":"error","message":"Cannot read properties of undefined (reading 'loginStrategy')"}
+{"level":"error","message":"Cannot read properties of undefined (reading 'loginStrategy')"}
+{"level":"error","message":"Cannot read properties of undefined (reading 'loginStrategy')"}
+{"level":"error","message":"Cannot read properties of undefined (reading 'loginStrategy')"}
+{"level":"error","message":"Cannot read properties of undefined (reading 'loginStrategy')"}
+{"level":"error","message":"Cannot read properties of undefined (reading 'loginStrategy')"}
+{"level":"error","message":"Cannot read properties of undefined (reading 'loginStrategy')"}
+{"level":"error","message":"Cannot read properties of undefined (reading 'loginStrategy')"}
+{"level":"error","message":"Cannot read properties of undefined (reading 'loginStrategy')"}
+{"level":"error","message":"Failed to fetch user profile"}
+{"level":"error","message":"Parse error on line 12:\n...g src=\"{{thumbnails.0}}\" alt={{title}} /\n-----------------------^\nExpecting 'ID', got 'NUMBER'"}
+{"level":"error","message":"Parse error on line 12:\n...g src=\"{{thumbnails.0}}\" alt={{title}} /\n-----------------------^\nExpecting 'ID', got 'NUMBER'"}
+{"level":"error","message":"Parse error on line 12:\n...g src=\"{{thumbnails.0}}\" alt={{title}} /\n-----------------------^\nExpecting 'ID', got 'NUMBER'"}
+{"level":"error","message":"Parse error on line 12:\n...g src=\"{{thumbnails.0}}\" alt={{title}} /\n-----------------------^\nExpecting 'ID', got 'NUMBER'"}
+{"level":"error","message":"Parse error on line 12:\n...g src=\"{{thumbnails.0}}\" alt={{title}} /\n-----------------------^\nExpecting 'ID', got 'NUMBER'"}
+{"level":"error","message":"Parse error on line 12:\n...g src=\"{{thumbnails.0}}\" alt={{title}} /\n-----------------------^\nExpecting 'ID', got 'NUMBER'"}
+{"level":"error","message":"loginStrategy is not defined"}
+{"level":"error","message":"Expected ',' or '}' after property value in JSON at position 69"}
+{"level":"error","message":"Expected double-quoted property name in JSON at position 73"}
+{"level":"error","message":"Bad control character in string literal in JSON at position 69"}

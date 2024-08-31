@@ -40,6 +40,10 @@ const usersSchema = new mongoose.Schema(
           },
         ]
     },
+    loginStrategy: {
+      type: String,
+      default: "jwt"
+    }
   },
   {
     timestamps: true,

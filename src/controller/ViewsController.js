@@ -2,9 +2,6 @@ import { productService } from "../services/ProductService.js";
 import { cartService } from "../services/CartService.js";
 import jwt from "jsonwebtoken";
 import { SECRET } from "../utils.js";
-//import { CartManagerMONGO as CartManager } from "../dao/CartManagerMONGO.js";
-
-//let cartManager = new CartManager();
 
 export class ViewsController {
   static home = async (req, res) => {
@@ -13,7 +10,6 @@ export class ViewsController {
   };
 
   static createProduct = async (req, res) => {
-    // Probar y agregar al menu
     res.status(200).render("createProduct");
   };
 
@@ -26,8 +22,8 @@ export class ViewsController {
       if (req.query.page) {
         page = req.query.page;
       }
+      let user = req.user;
       let token = req.cookies["codercookie"];
-      let user = jwt.verify(token, SECRET); // For sessions - let user = req.session.user;
       let products = await productService.getProductsPaginated(
         query,
         limit,
@@ -50,7 +46,7 @@ export class ViewsController {
       res.setHeader("Content-Type", "text/html");
       res.status(200).render("realtime", { rtproducts });
     } catch (error) {
-      console.log(error); //Logger?
+      console.log(error);                                                                                          //Logger?
       res.setHeader("Content-Type", "application/json");
       return res.status(500).json({
         error: `Unexpected server error - Try again later or contact admninistrator`,
@@ -76,14 +72,14 @@ export class ViewsController {
     res.status(200).render("login", { error });
   };
 
-  static loginJWT = async (req, res) => {
+  static login = async (req, res) => {
     let { error } = req.query;
-    res.status(200).render("loginJWT", { error });
+    res.status(200).render("login", { error });
   };
 
-  static logoutJWT = async (req, res) => {
+  static logout = async (req, res) => {
     let { error } = req.query;
-    res.status(200).render("logoutJWT", { error });
+    res.status(200).render("logout", { error });
   };
 
   static loginGitHub = async (req, res) => {
@@ -93,20 +89,6 @@ export class ViewsController {
 
   static profile = async (req, res) => {
     res.status(200).render("profile", { user: req.session.user });
-  };
-
-  static logout = async (req, res) => {
-    req.session.destroy((e) => {
-      if (e) {
-        console.log(error); // logger
-        res.setHeader("Content-Type", "application/json");
-        return res.status(500).json({
-          error: `Unexpected server error - Try again later or contact admninistrator`,
-          detalle: `${error.message}`,
-        });
-      }
-    });
-    res.status(200).render("logout");
   };
 
   static passwordReset = async (req, res) => {
@@ -144,4 +126,5 @@ export class ViewsController {
   static chat = async (req, res) => {
     res.status(200).render("chat");
   };
+
 }

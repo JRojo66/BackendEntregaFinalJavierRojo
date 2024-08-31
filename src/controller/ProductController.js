@@ -61,7 +61,6 @@ export class ProductController {
       }
 
       if (typeof queryObject === "object") {
-        // Validate query - Que mande alguna de la propiedades existentes
         query = queryObject;
       } else {
         res.setHeader("Content-Type", "application/json");

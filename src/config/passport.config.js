@@ -11,7 +11,7 @@ const extractToken = (req) => {
   let token = null;
   if (req.cookies["codercookie"]) {
     token = req.cookies["codercookie"];
-  }
+  } 
   return token;
 };
 
@@ -83,7 +83,7 @@ export const initPassport = () => {
       {
         clientID: "Iv23lilw42OZu4xXKicA",
         clientSecret: "22bca2a20c3dda4b5b5b9ca2d19ac00275eb297b",
-        callbackURL: "http://localhost:8080/api/sessions/callBackGithub",
+        callbackURL: "/api/sessions/callBackGithub",
       },
       async (accessToken, refreshToken, profile, done) => {
         try {

@@ -54,8 +54,7 @@ router.get(
 );
 router.get("/register", ViewsController.register);
 router.get("/login", ViewsController.login);
-router.get("/loginJWT", ViewsController.loginJWT);
-router.get("/logoutJWT", ViewsController.logoutJWT);
+router.get("/logout", ViewsController.logout);
 router.get("/login/github", ViewsController.loginGitHub);
 router.get("/passwordReset", ViewsController.passwordReset);
 router.get("/passwordResetForm", ViewsController.passwordResetForm);
@@ -64,11 +63,7 @@ router.get(
   roleMiddleware(["admin", "premium", "user"]),
   ViewsController.profile
 );
-router.get(
-  "/logout",
-  roleMiddleware(["admin", "premium", "user"]),
-  ViewsController.logout
-);
+
 router.get("/chat", roleMiddleware(["premium", "user"]), ViewsController.chat);
 
 export default router;

@@ -15,11 +15,6 @@ router.post(
   passport.authenticate("login", { failureRedirect: "/api/sessions/error" }),
   SessionsController.login
 );
-router.post(
-  "/loginJWT",
-  passport.authenticate("login", { failureRedirect: "/api/sessions/error" }),
-  SessionsController.loginJWT
-);
 router.post("/passwordReset", SessionsController.passwordReset);
 router.get("/error", SessionsController.error);
 router.get(
@@ -32,5 +27,5 @@ router.get(
   passport.authenticate("github", { failureRedirect: "/api/sessions/error" }),
   SessionsController.callBackGitHub
 );
-router.get("/logoutJWT", SessionsController.logoutJWT);
+router.get("/logout", SessionsController.logout);
 router.get("/current", SessionsController.current);

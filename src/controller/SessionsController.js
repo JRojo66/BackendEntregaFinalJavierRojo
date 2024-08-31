@@ -28,13 +28,13 @@ export class SessionsController {
     }
   };
 
-  static loginJWT = async (req, res) => {
-    let { email, password } = req.body;
+  static login = async (req, res) => {
+    let { email, password, loginStrategy } = req.body;
     if (!email || !password) {
       res.setHeader("Content-Type", "application/json");
       return res.status(400).json({ payload: "Enter email and password" });
     }
-    let user = await userService.getUsersBy({ email }); // Pasar a service
+    let user = await userService.getUsersBy({ email });
     if (!user)
       return res
         .status(400)
@@ -43,34 +43,55 @@ export class SessionsController {
     user = { ...user };
     let token = jwt.sign(user, SECRET, { expiresIn: "1h" });
     res.cookie("codercookie", token, { httpOnly: true });
-    // Record login time
-    await userService.updateUser({ email }, { last_connection: new Date() });
+    await userService.updateUser({ email }, {loginStrategy},{ last_connection: new Date() });
     return res.status(200).json({
       userLogged: user,
       token,
     });
   };
 
-  static logoutJWT = async (req, res) => {
+  static logout = async (req, res) => {
     try {
-      const token = req.cookies.codercookie;
-      if(!token){
+      if(!req.user){
         res.setHeader('Content-Type','application/json');
         return res.status(400).json({error:`User is not logged...!!!`})
+      };
+      if(req.user.loginStrategy === "jwt"){
+        const token = req.cookies.codercookie;
+        if(!token){
+          res.setHeader('Content-Type','application/json');
+          return res.status(400).json({error:`User is not logged...!!!`})
+        }
+        const user = jwt.verify(token, SECRET);
+        const email = user.email;
+        await userService.updateUser({ email }, { last_connection: new Date() });
+        res.clearCookie("codercookie");
+        res.setHeader("Content-Type", "application/json");
+        return res
+          .status(200)
+          .json({ payload: `Bye ${user.name}, hope to see you back soon!` });
       }
-      const user = jwt.verify(token, SECRET);
-      const email = user.email;
-      await userService.updateUser({ email }, { last_connection: new Date() });
-      res.clearCookie("codercookie");
-      res.setHeader("Content-Type", "application/json");
-      return res
-        .status(200)
-        .json({ payload: `Bye ${user.name}, hope to see you back soon!` });
+      if(req.user.loginStrategy === "gitHub"){
+        const userName = req.user.name
+        req.logout((err) => {
+          if (err) {
+              return res.status(500).send('Error closing session');
+          }
+          req.session.destroy((err) => {
+              if (err) {
+                  return res.status(500).send('Error destroying session');
+              }
+              res.clearCookie('connect.sid'); 
+              res.setHeader('Content-Type','application/json');
+              return res.status(200).json({payload:`Bye ${userName}, hope to see you back soon!`});
+          });
+        });   
+      }
     } catch (error) {
       console.log(error);                                                                     // Logger?
       res.setHeader("Content-Type", "application/json");
       return res.status(500).json({
-        error: `Unexpected error - Try later or contact administrator...!!!`,
+        error: `Unexpected error logging out- Try later or contact administrator...!!!`,
       });
     }
   };
@@ -121,22 +142,19 @@ export class SessionsController {
 
   static loginGitHub = (req, res) => {
     async (req, res) => {
-      let { web } = req.body;
-      let user = { ...req.user }; // passport modifies the request creating a req.user
       delete user.password;
       req.session.user = user;
-      if (web) {
-        res.redirect("/profile");
-      } else {
-        res.setHeader("Content-Type", "application/json");
-        return res
-          .status(200)
-          .json({ payload: "Successful Login...!!!", user });
-      }
+      res.setHeader("Content-Type", "application/json");
+      return res
+        .status(200)
+        .json({ payload: "Successful Login...!!!", user });      
     };
   };
 
-  static callBackGitHub = (req, res) => {
+  static callBackGitHub = async (req, res) => {
+    const email = req.user.email;
+    req.user.loginStrategy = "gitHub";
+    const u = await userService.updateUser({email},{loginStrategy:"gitHub"})
     req.session.user = req.user;
     res.setHeader("Content-Type", "application/json");
     return res.status(200).json({ payload: req.user });
