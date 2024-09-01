@@ -77,3 +77,53 @@ paths:
                   error:
                     type: string
                     example: cart id 66789f7c7e06af63bddf1c10 not found                   
+  /api/cart/{cid}/product/{pid}:
+    post:
+      summary: Adds product to cart
+      tags:
+        - Carts
+      parameters:
+      - name: cid
+        in: path
+        required: true
+        description: Cart's cid
+      - name: pid
+        in: path
+        required: true
+        description: Product's id
+      description: Adds product to cart
+      responses:
+        '200':
+          description: Successfull - adds product
+          content: 
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payload:
+                    type: string
+                    example: Cart updated
+        '400':
+          description: Cant find product or cart
+          content: 
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payload:
+                    type: string
+                    example: Can't find Cart id xxx/Can't find product id xxx
+        '401':
+          description: Product owmer
+          content: 
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payload:
+                    type: string
+                    example: Can't buy your own products... Doesn't make sense, ask Coderhouse why...
+
+            
+
+

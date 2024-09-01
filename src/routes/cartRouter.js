@@ -3,30 +3,39 @@ import { __dirname } from "../utils.js";
 import { CartController } from "../controller/CartController.js";
 import passport from "passport";
 import { TicketController } from "../controller/TicketController.js";
+import roleMiddleware from "../middleware/roleMiddleware.js";
 
 export const router = Router();
 
-router.get("/", CartController.getAllCarts);
-router.get("/:cid", CartController.getCartById);
-
-// jwt login and user/premim/admin role required
+router.get("/", roleMiddleware(["admin"]), CartController.getAllCarts);
+router.get("/:cid", roleMiddleware(["admin"]), CartController.getCartById);
 router.post(
   "/:cid/product/:pid",
-  passport.authenticate("current", { session: false }),
-  (req, res, next) => {
-    if (
-      req.user.role === "user" ||
-      req.user.role === "premium" ||
-      req.user.role === "admin"
-    ) {
-      CartController.addProductInCart(req, res, next);
-    } else {
-      res.status(403).json({ message: "user or premium role required." });
-    }
-  }
+  roleMiddleware(["admin", "user", "premium"]),
+  CartController.addProductInCart
 );
-router.put("/:cid", CartController.updateCart);
-router.put("/:cid/products/:pid", CartController.updateQty);
-router.delete("/:cid/product/:pid", CartController.deleteProduct);
-router.delete("/:cid", CartController.deleteAllProductsInCart);
-router.post("/:cid/purchase", TicketController.createTicket);
+router.put(
+  "/:cid",
+  roleMiddleware(["admin", "user", "premium"]),
+  CartController.updateCart
+);
+router.put(
+  "/:cid/products/:pid",
+  roleMiddleware(["admin", "user", "premium"]),
+  CartController.updateQty
+);
+router.delete(
+  "/:cid/product/:pid",
+  roleMiddleware(["admin", "user", "premium"]),
+  CartController.deleteProduct
+);
+router.delete(
+  "/:cid",
+  roleMiddleware(["admin", "user", "premium"]),
+  CartController.deleteAllProductsInCart
+);
+router.post(
+  "/:cid/purchase",
+  roleMiddleware(["admin", "user", "premium"]),
+  TicketController.createTicket
+);

@@ -35,7 +35,6 @@ export class CartController {
       res.setHeader("Content-Type", "application/json");
       return res.status(500).json({
         error: `Unexpected server error - Try again later or contact admninistrator`,
-        detail: `${error.message}`,
       });
     }
   };
@@ -54,7 +53,14 @@ export class CartController {
       } else {
         res.json(cart);
       }
-    } catch {
+    } catch (error) {
+      let errorData = {
+        title: "Error accesing Carts DB by id",
+        name: error.name,
+        message: error.message,
+        stack: error.stack,
+      };
+      customLogger.error(JSON.stringify(errorData, null, 5));
       res.setHeader("Content-Type", "application/json");
       return res.status(500).json({ error: "Unkwown error params" });
     }
@@ -66,41 +72,49 @@ export class CartController {
       res.setHeader("Content-Type", "application/json");
       return res.status(400).json({ error: `Not valid cid/pid` });
     }
-
     let cart = await cartService.getOneCartBy({ _id: cid });
     if (!cart) {
       res.setHeader("Content-Type", "application/json");
-      return res.status(400).json({ error: `Can't find Cart id ${cid}` });
+      return res.status(400).json({ payload: `Can't find Cart id ${cid}` });
     }
-    let product = await productService.getProductBy({ _id: pid });
-    if (!product) {
+    try {
+      let product = await productService.getProductBy({ _id: pid });
+      if (!product) {
+        res.setHeader("Content-Type", "application/json");
+        return res.status(400).json({ payload: `Can't find product id ${pid}` });
+      }
+      if (product.owner === req.user.email) {
+        return res.status(401).json({
+          payload: `Can't buy your own products... Doesn't make sense, ask Coderhouse why...`,
+        });
+      }
+      let productIndex = cart.products.findIndex((p) => p.product == pid);
+      if (productIndex === -1) {
+        cart.products.push({ product: pid, qty: 1 });
+      } else {
+        cart.products[productIndex].qty++;
+      }
+      let result = await cartService.updateCart(cid, cart);
+      if (result.modifiedCount > 0) {
+        res.setHeader("Content-Type", "application/json");
+        return res.status(200).json({payload: "Cart updated"});
+      } else {
+        res.setHeader("Content-Type", "application/json");
+        return res.status(500).json({
+          error: `Unexpected server error - Try later or contact administrator`,
+          detalle: `Could not update...!`,
+        });
+      }
+    } catch (error){
+      let errorData = {
+        title: "Error adding product in cart",
+        name: error.name,
+        message: error.message,
+        stack: error.stack,
+      };
+      customLogger.error(JSON.stringify(errorData, null, 5));
       res.setHeader("Content-Type", "application/json");
-      return res.status(400).json({ error: `Can't find product id ${pid}` });
-    }
-
-    if (product.owner === req.user.email) {
-      return res.status(401).json({
-        error: `Can't buy your own products... Doesn't make sense, ask Coderhouse why...`,
-      });
-    }
-
-    let productIndex = cart.products.findIndex((p) => p.product == pid);
-
-    if (productIndex === -1) {
-      cart.products.push({ product: pid, qty: 1 });
-    } else {
-      cart.products[productIndex].qty++;
-    }
-    let result = await cartService.updateCart(cid, cart);
-    if (result.modifiedCount > 0) {
-      res.setHeader("Content-Type", "application/json");
-      return res.status(200).json("Cart updated");
-    } else {
-      res.setHeader("Content-Type", "application/json");
-      return res.status(500).json({
-        error: `Unexpected server error - Try later or contact administrator`,
-        detalle: `Could not update...!`,
-      });
+      return res.status(500).json({ error: "Unkwown error params" });
     }
   };
 
@@ -119,15 +133,26 @@ export class CartController {
         .status(404)
         .json({ error: `There is no cart with id: ${cid}` });
     }
-
     let newProducts = req.body;
+    try{
     const newCart = await cartService.updateCart(cid, newProducts);
     res.setHeader("Content-Type", "application/json");
     return res.status(200).json(`Cart ${cid} updated`);
+    } catch(error){
+      let errorData = {
+        title: "Error updating cart",
+        name: error.name,
+        message: error.message,
+        stack: error.stack,
+      };
+      customLogger.error(JSON.stringify(errorData, null, 5));
+      res.setHeader("Content-Type", "application/json");
+      return res.status(500).json({ error: "Unkwown error params" });
+
+    }
   };
 
   static updateQty = async (req, res) => {
-    // WARNING: the endpoint is very similar to "/:cid/product/:pid" and can be confused
     let { cid, pid } = req.params;
     if (!isValidObjectId(cid) || !isValidObjectId(pid)) {
       return res
@@ -138,10 +163,16 @@ export class CartController {
     try {
       exists = await productService.getProductBy({ _id: pid });
     } catch (error) {
+      let errorData = {
+        title: "Error getting product for updating cart qty",
+        name: error.name,
+        message: error.message,
+        stack: error.stack,
+      };
+      customLogger.error(JSON.stringify(errorData, null, 5));
       res.setHeader("Content-Type", "application/json");
       return res.status(500).json({
         error: `Unexpected server error - Try again later or contact admninistrator`,
-        detail: `${error.message}`,
       });
     }
     if (!exists) {
@@ -176,21 +207,20 @@ export class CartController {
           error: `There is no product ${pid} does not exist in cart ${cid}`,
         });
       }
-
-      if (product.owner === req.user.email) {
-        return res.status(401).json({
-          error: `Can't buy your own products... Doesn't make sense, ask Coderhouse why...`,
-        });
-      }
-
       let newProducts = { products: cart.products };
       const newCart = await cartService.updateCart(cid, newProducts);
       return res.json(`Updated cart: ${pid} with qty: ${newQty}`);
     } catch (error) {
+      let errorData = {
+        title: "Error accessing cart for updating cart quantity",
+        name: error.name,
+        message: error.message,
+        stack: error.stack,
+      };
+      customLogger.error(JSON.stringify(errorData, null, 5));
       res.setHeader("Content-Type", "application/json");
       return res.status(500).json({
         error: `Unexpected server error - Try again later or contact admninistrator`,
-        detail: `${error.message}`,
       });
     }
   };
@@ -206,10 +236,16 @@ export class CartController {
     try {
       existsInProducts = await productService.getProductBy({ _id: pid });
     } catch (error) {
+      let errorData = {
+        title: "Error getting product for deleting product in cart",
+        name: error.name,
+        message: error.message,
+        stack: error.stack,
+      };
+      customLogger.error(JSON.stringify(errorData, null, 5));
       res.setHeader("Content-Type", "application/json");
       return res.status(500).json({
         error: `Unexpected server error - Try again later or contact admninistrator`,
-        detail: `${error.message}`,
       });
     }
     if (!existsInProducts) {
@@ -222,10 +258,16 @@ export class CartController {
     try {
       cartExists = await cartService.getOneCartBy({ _id: cid });
     } catch (error) {
+      let errorData = {
+        title: "Error accessing cart to update",
+        name: error.name,
+        message: error.message,
+        stack: error.stack,
+      };
+      customLogger.error(JSON.stringify(errorData, null, 5));
       res.setHeader("Content-Type", "application/json");
       return res.status(500).json({
         error: `Unexpected server error - Try again later or contact admninistrator`,
-        detail: `${error.message}`,
       });
     }
     if (!cartExists) {
@@ -241,13 +283,19 @@ export class CartController {
         .status(404)
         .json({ error: `There is no product ${pid} in cart ${cid}` });
     }
-    try {
+    try {console.log(lalala);
       let cartUpdated = await cartService.deleteProductInCart(cid, pid);
       res.json(`${pid} deleted from cart: ${cid}`);
     } catch (error) {
+      let errorData = {
+        title: "Error deleting product in cart in the database",
+        name: error.name,
+        message: error.message,
+        stack: error.stack,
+      };
+      customLogger.error(JSON.stringify(errorData, null, 5));
       return res.json({
         error: `Unexpected server error - Try again later or contact admninistrator`,
-        detail: `${error.message}`,
       });
     }
   };
@@ -263,10 +311,16 @@ export class CartController {
     try {
       cartExists = await cartService.getCartBy({ _id: cid });
     } catch (error) {
+      let errorData = {
+        title: "Error getting cart by cart id to delete all products in cart",
+        name: error.name,
+        message: error.message,
+        stack: error.stack,
+      };
+      customLogger.error(JSON.stringify(errorData, null, 5));
       res.setHeader("Content-Type", "application/json");
       return res.status(500).json({
         error: `Unexpected server error - Try again later or contact admninistrator`,
-        detail: `${error.message}`,
       });
     }
     if (!cartExists) {
@@ -276,8 +330,22 @@ export class CartController {
         .json({ error: `There is no cart with id: ${cid}` });
     }
     let newProducts = { products: [] };
-    const newCart = await cartService.updateCart(cid, newProducts);
-    res.setHeader("Content-Type", "application/json");
-    return res.json(`Products in cart ${cid} were deleted`);
-  };
+    try{
+      const newCart = await cartService.updateCart(cid, newProducts);
+      res.setHeader("Content-Type", "application/json");
+      return res.json(`Products in cart ${cid} were deleted`);
+    } catch(error){
+      let errorData = {
+        title: "Error getting cart by cart id to delete all products in cart",
+        name: error.name,
+        message: error.message,
+        stack: error.stack,
+      };
+      customLogger.error(JSON.stringify(errorData, null, 5));
+      res.setHeader("Content-Type", "application/json");
+      return res.status(500).json({
+        error: `Unexpected server error - Try again later or contact admninistrator`,
+      });
+    };
+  }
 }

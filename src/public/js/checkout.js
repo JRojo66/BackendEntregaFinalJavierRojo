@@ -15,7 +15,17 @@ const checkout = async (cid) => {
     }
     window.location.reload();
   } catch (error) {
-    console.log(error);                                                     // Logger?
+    let errorData = {
+      title: "Error checking out",
+      name: error.name,
+      message: error.message,
+      stack: error.stack,
+    };
+    customLogger.error(JSON.stringify(errorData, null, 5));
+    res.setHeader("Content-Type", "application/json");
+    return res.status(500).json({
+      error: `Unexpected server error - Try again later or contact admninistrator`,
+    });
   }
 };
 // delete product from cart
@@ -30,6 +40,16 @@ const deleteProduct = async (cid, pid) => {
       });
    // window.location.reload();
   } catch (error) {
-    console.log(error);                                                         // Logger?
+    let errorData = {
+      title: "Error deleting product in cart",
+      name: error.name,
+      message: error.message,
+      stack: error.stack,
+    };
+    customLogger.error(JSON.stringify(errorData, null, 5));
+    res.setHeader("Content-Type", "application/json");
+    return res.status(500).json({
+      error: `Unexpected server error - Try again later or contact admninistrator`,
+    });
   }
 };

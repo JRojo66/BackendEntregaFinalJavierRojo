@@ -11,10 +11,8 @@ export const validationProducts = (
   const errors = [];
   if (!title) {
     errors.push("Title is required.");
-    //CustomError.createError("Title is required.", productArguments(title, description, code, price, status, stock, category, thumbnails), "Complete title", ERROR_TYPE.INVALID_ARGUMENTS)
   } else if (typeof title !== "string" || title.trim() === "") {
     errors.push("Title must be a non-empty string.");
-    //CustomError.createError("Title must be a non-empty string.", productArguments(title, description, code, price, status, stock, category, thumbnails), "Complete title", ERROR_TYPE.INVALID_ARGUMENTS)
   }
 
   if (!description) {

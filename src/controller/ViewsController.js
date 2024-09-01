@@ -34,7 +34,13 @@ export class ViewsController {
       res.setHeader("Content-Type", "text/html");
       res.status(200).render("products", { products, user, cartId });
     } catch (error) {
-      console.error("Error fetching products:", error);
+      let errorData = {
+        title: "error fetching products",
+        name: error.name,
+        message: error.message,
+        stack: error.stack,
+        };
+        customLogger.error(JSON.stringify(errorData, null, 5));
       res.status(500).send("Error fetching products");
     }
   };
@@ -46,7 +52,13 @@ export class ViewsController {
       res.setHeader("Content-Type", "text/html");
       res.status(200).render("realtime", { rtproducts });
     } catch (error) {
-      console.log(error);                                                                                          //Logger?
+      let errorData = {
+        title: "error getting products for rendering real time products",
+        name: error.name,
+        message: error.message,
+        stack: error.stack,
+        };
+        customLogger.error(JSON.stringify(errorData, null, 5));
       res.setHeader("Content-Type", "application/json");
       return res.status(500).json({
         error: `Unexpected server error - Try again later or contact admninistrator`,
@@ -58,9 +70,19 @@ export class ViewsController {
     let { cid } = req.params;
     let token = req.cookies["codercookie"];
     let user = jwt.verify(token, SECRET);
-    let cart = await cartService.getCartBy({ _id: cid });
-    res.setHeader("Content-Type", "text/html");
-    return res.status(200).render("cart", { cart, user });
+    try{
+      let cart = await cartService.getCartBy({ _id: cid });
+      res.setHeader("Content-Type", "text/html");
+      return res.status(200).render("cart", { cart, user });
+    }catch(error){
+      let errorData = {
+        title: "error getting cart id for rendering cart",
+        name: error.name,
+        message: error.message,
+        stack: error.stack,
+        };
+        customLogger.error(JSON.stringify(errorData, null, 5));
+    }
   };
 
   static register = async (req, res) => {

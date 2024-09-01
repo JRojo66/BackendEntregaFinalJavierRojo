@@ -113,8 +113,7 @@ export class TicketController {
       customLogger.error(JSON.stringify(errorData, null, 5));
       return res.json({
         error:
-          `Unexpected server error - Try again later or contact admninistrator` +
-          error,
+          `Unexpected server error - Try again later or contact admninistrator`
       });
     }
   };

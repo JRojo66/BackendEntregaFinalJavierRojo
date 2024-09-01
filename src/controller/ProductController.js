@@ -90,13 +90,26 @@ export class ProductController {
           .json({ error: "The 'sort' parameter must be a JSON" });
       }
     }
-
-    pquery = await productService.getProductsPaginated(
-      query,
-      limit,
-      page,
-      sort
-    );
+    try{
+      pquery = await productService.getProductsPaginated(
+        query,
+        limit,
+        page,
+        sort
+      );
+    } catch(error){
+      let errorData = {
+      title: "Error getting paginated products",
+      name: error.name,
+      message: error.message,
+      stack: error.stack,
+      };
+      customLogger.error(JSON.stringify(errorData, null, 5));
+      res.setHeader("Content-Type", "application/json");
+      return res.status(500).json({
+        error: `Unexpected server error - Try again later or contact admninistrator`,
+      });
+    }
 
     if (!pquery.hasPrevPage) {
       prevLink = null;
@@ -145,7 +158,14 @@ export class ProductController {
       } else {
         res.json({ product, user: req.user });
       }
-    } catch {
+    } catch (error){
+      let errorData = {
+        title: "Error getting product by id",
+        name: error.name,
+        message: error.message,
+        stack: error.stack,
+        };
+        customLogger.error(JSON.stringify(errorData, null, 5));
       return res.json({ error: "Unkwown error params" });
     }
   };
@@ -183,6 +203,13 @@ export class ProductController {
     try {
       exists = await productService.getProductBy({ code });
     } catch (error) {
+      let errorData = {
+        title: "Error creating product",
+        name: error.name,
+        message: error.message,
+        stack: error.stack,
+        };
+        customLogger.error(JSON.stringify(errorData, null, 5));
       res.setHeader("Content-Type", "application/json");
       return res.status(500).json({
         error: `Unexpected server error - Try again later or contact admninistrator`,
@@ -212,6 +239,13 @@ export class ProductController {
       res.setHeader("Content-Type", "application/json");
       return res.status(200).json({ payload: productAdded });
     } catch (error) {
+      let errorData = {
+        title: "Error adding product when creating it",
+        name: error.name,
+        message: error.message,
+        stack: error.stack,
+        };
+        customLogger.error(JSON.stringify(errorData, null, 5));
       res.setHeader("Content-Type", "application/json");
       res.status(500).json({
         error: `Unexpected server error - Try again later or contact admninistrator`,
@@ -245,6 +279,13 @@ export class ProductController {
           });
         }
       } catch (error) {
+        let errorData = {
+          title: "Error updating product 1",
+          name: error.name,
+          message: error.message,
+          stack: error.stack,
+          };
+          customLogger.error(JSON.stringify(errorData, null, 5));
         return res.status(500).json({
           error: `${error.message}`,
         });
@@ -261,6 +302,13 @@ export class ProductController {
       const products = await productService.updateProducts(pid, updatedProduct);
       return res.json(products);
     } catch (error) {
+      let errorData = {
+        title: "Error updating product 2",
+        name: error.name,
+        message: error.message,
+        stack: error.stack,
+        };
+        customLogger.error(JSON.stringify(errorData, null, 5));
       res.status(300).json({
         error: `Unexpected server error - Try again later or contact admninistrator`,
       });
@@ -292,7 +340,14 @@ export class ProductController {
         return res.status(404).json({ error: `${pid} inexistent` });
       }
     } catch (error) {
-      return res.status(300).json({ error: `Error deleting product ${pid}` });
+      let errorData = {
+        title: "Error deleting product",
+        name: error.name,
+        message: error.message,
+        stack: error.stack,
+        };
+        customLogger.error(JSON.stringify(errorData, null, 5));
+      return res.status(500).json({ error: `Error deleting product ${pid}` });
     }
   };
 }

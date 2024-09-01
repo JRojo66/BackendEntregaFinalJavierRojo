@@ -33,11 +33,16 @@ export class PasswordResetController {
         .json({ payload: "Successfull password change...!!!" });
     } catch (error) {
       if (error instanceof jwt.TokenExpiredError) {
-        console.error("Error1:", error.message);
         res.setHeader("Content-Type", "application/json");
         return res.status(401).json({ Error: "Time out... Reset again!!!" });
       } else {
-        console.error("Error :", error.message); // Log the error message
+        let errorData = {
+          title: "Error reseting password",
+          name: error.name,
+          message: error.message,
+          stack: error.stack,
+          };
+          customLogger.error(JSON.stringify(errorData, null, 5));
         res.setHeader("Content-Type", "application/json");
         return res.status(500).json({
           Error: "Unexpected error - Try later or contact administrator...!!!",

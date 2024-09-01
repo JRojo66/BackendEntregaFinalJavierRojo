@@ -1,10 +1,10 @@
 paths:
-  /api/sessions/loginjwt:
+  /api/sessions/login:
     post:
       summary: Logs in
       tags:
-        - Login jwt
-      description: Logs is via jwt
+        - Login
+      description: Logs in via jwt
       requestBody:
         content:
           application/json:
@@ -13,7 +13,7 @@ paths:
               properties:
                 email: 
                   type: string
-                  example: test@gmail.com
+                  example: lionel@test.com
                 password:
                   type: string
                   example: 123
