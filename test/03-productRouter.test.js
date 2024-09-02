@@ -1,8 +1,9 @@
 import { describe, it, before, afterEach } from "mocha";
 import { expect } from "chai";
 import supertest from "supertest";
+import { config } from '../src/config/config.js';
 
-const requester = supertest("http://localhost:8080");
+const requester = supertest(`${config.ROOT_URL}`);;
 
 describe("Test get products from protected route", function () {
   this.timeout(10000);
@@ -27,9 +28,18 @@ describe("Test get products from protected route", function () {
   });
 
   it("must return products", async function () {
+    
+    const mockUserb = {
+      user: {
+        loginStrategy: "jwt",
+        role: "admin"
+      }
+    };
+
     const response = await requester
       .get("/api/products")
-      .set("Cookie", [`${cookie.name}=${cookie.value}`]);
+      .set("Cookie", [`${cookie.name}=${cookie.value}`])
+      .set("user", mockUserb);
     const products = JSON.parse(response.text).payload;
     expect(products).to.be.an("array");
     for (const product of products) {

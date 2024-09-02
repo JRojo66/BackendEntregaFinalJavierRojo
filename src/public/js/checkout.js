@@ -1,6 +1,6 @@
 const checkout = async (cid) => {
-  let inputCarrito = document.getElementById("cartCheckout");
-  cid = inputCarrito.value;
+  let inputCart = document.getElementById("cartCheckout");
+  cid = inputCart.value;
   try {
     let payload = await fetch(`/api/cart/${cid}/purchase`, {
       method: "post",
@@ -28,17 +28,15 @@ const checkout = async (cid) => {
     });
   }
 };
-// delete product from cart
-const deleteProduct = async (cid, pid) => {
+
+const deleteProduct = async (pid) => {
   try {
     let inputCarrito = document.getElementById("cartCheckout");
     cid = inputCarrito.value;
-    let deleteProd = document.getElementById("deleteProd");
-    pid = deleteProd.value;
     await fetch(`/api/cart/${cid}/product/${pid}`, {
-        method: "post",
+        method: "delete",
       });
-   // window.location.reload();
+    window.location.reload();
   } catch (error) {
     let errorData = {
       title: "Error deleting product in cart",
@@ -53,3 +51,13 @@ const deleteProduct = async (cid, pid) => {
     });
   }
 };
+
+const emptyCart = async (cid) => {
+  let inputCart = document.getElementById("cartCheckout");
+  cid = inputCart.value;
+  await fetch(`/api/cart/${cid}`, {
+    method: "delete",
+  });
+  window.location.reload();
+
+}

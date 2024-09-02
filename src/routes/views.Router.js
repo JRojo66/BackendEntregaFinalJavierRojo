@@ -8,12 +8,12 @@ export const router = Router();
 router.get("/", ViewsController.home);
 router.get(
   "/createProduct",
-  roleMiddleware(["admin", "premium"]),
+  roleMiddleware(["admin", "premium", "user"]),
   ViewsController.createProduct
 );
 router.get(
   "/products",
-  roleMiddleware(["premium", "user"]),
+  roleMiddleware(["admin","premium", "user"]),
   ViewsController.products
 );
 router.get(
@@ -58,12 +58,6 @@ router.get("/logout", ViewsController.logout);
 router.get("/login/github", ViewsController.loginGitHub);
 router.get("/passwordReset", ViewsController.passwordReset);
 router.get("/passwordResetForm", ViewsController.passwordResetForm);
-router.get(
-  "/profile",
-  roleMiddleware(["admin", "premium", "user"]),
-  ViewsController.profile
-);
-
 router.get("/chat", roleMiddleware(["premium", "user"]), ViewsController.chat);
 
 export default router;

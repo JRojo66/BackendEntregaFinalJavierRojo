@@ -176,11 +176,12 @@ export class ProductController {
       description,
       code,
       price,
-      status,
       stock,
       category,
       thumbnails,
     } = req.body;
+
+    let status = true;
 
     let owner = req.user.email;
 
@@ -196,6 +197,7 @@ export class ProductController {
     );
 
     if (errors.length > 0) {
+
       res.setHeader("Content-Type", "application/json");
       return res.status(400).json({ error: errors });
     }
@@ -317,6 +319,7 @@ export class ProductController {
 
   static deleteProduct = async (req, res) => {
     let { pid } = req.params;
+    console.log(pid);                                                                                       //clg
     if (!isValidObjectId(pid)) {
       return res.status(400).json({
         error: `Enter a valid id`,

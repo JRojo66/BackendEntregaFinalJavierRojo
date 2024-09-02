@@ -283,7 +283,7 @@ export class CartController {
         .status(404)
         .json({ error: `There is no product ${pid} in cart ${cid}` });
     }
-    try {console.log(lalala);
+    try {
       let cartUpdated = await cartService.deleteProductInCart(cid, pid);
       res.json(`${pid} deleted from cart: ${cid}`);
     } catch (error) {

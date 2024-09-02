@@ -11,9 +11,7 @@ export class TicketController {
   static createTicket = async (req, res) => {
     try {
       const code = new Date().getTime();
-
       let { cid } = req.params;
-
       let user = await userService.getUsersBy({ cart: cid });
       if (!user) {
         return res.status(404).json({ error: `Cart ${cid} not found...!` });

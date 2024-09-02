@@ -67,13 +67,14 @@ export class ViewsController {
   };
 
   static getCartById = async (req, res) => {
+    
     let { cid } = req.params;
-    let token = req.cookies["codercookie"];
-    let user = jwt.verify(token, SECRET);
+//    let token = req.cookies["codercookie"];
+    let user = req.user;
     try{
       let cart = await cartService.getCartBy({ _id: cid });
       res.setHeader("Content-Type", "text/html");
-      return res.status(200).render("cart", { cart, user });
+       return res.status(200).render("cart", { cart, user });
     }catch(error){
       let errorData = {
         title: "error getting cart id for rendering cart",
@@ -107,10 +108,6 @@ export class ViewsController {
   static loginGitHub = async (req, res) => {
     let { error } = req.query;
     res.status(200).render("loginGitHub", { error });
-  };
-
-  static profile = async (req, res) => {
-    res.status(200).render("profile", { user: req.session.user });
   };
 
   static passwordReset = async (req, res) => {

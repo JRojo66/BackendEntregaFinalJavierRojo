@@ -8,7 +8,7 @@ router.get(
   "/",
   roleMiddleware(["admin", "user", "premium"]),
   ProductController.getProducts
-); //   
+);
 router.get(
   "/:id",
   roleMiddleware(["admin", "user", "premium"]),
@@ -16,7 +16,7 @@ router.get(
 );
 router.post(
   "/",
-  roleMiddleware(["admin", "premium"]),
+  roleMiddleware(["admin", "premium", "user"]),
   ProductController.createProduct
 );
 router.put(

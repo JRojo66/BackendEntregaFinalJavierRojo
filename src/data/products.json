@@ -104,4 +104,164 @@
     "code": "abc129",
     "stock": 90
   }
+  {
+    "id": 2,
+    "title": "Tools",
+    "description": "With 142 high-quality pieces, this Total toolbox offers everything you need to tackle a wide range of tasks. Built to last, it features durable, long-lasting tools with ergonomic handles for a secure grip. Ideal for both professionals and DIY enthusiasts, this toolbox is a smart investment for any workshop or tool chest. It includes a comprehensive range of wrenches, screwdrivers, bits, and accessories to meet all your needs.",
+    "price": 280,
+    "status": false,
+    "category": "Tools",
+    "owner":"lionel@test.com",
+    "thumbnails": [
+      "https://www.google.com.ar/url?sa=i&url=https%3A%2F%2Fsiglo21myh.com.ar%2Fproductos%2Fcaja-de-herramientas-total-thkthp21426%2F&psig=AOvVaw3WMHYPDGyYjxvAnyTU5dvB&ust=1725301000177000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCICg9J6toogDFQAAAAAdAAAAABAE",
+      "sin imagen update b",
+      "sin imagen update c"
+    ],
+    "code": "abc500",
+    "stock": 98
+  },
+  {
+    "id": 3,
+    "title": "Headphones",
+    "description": "Enjoy high-quality sound and all-day comfort with the Sony WH-CH520 wireless headphones. Featuring a lightweight design, long battery life, and noise cancellation, these headphones are perfect for music lovers on the go.",
+    "price": 40,
+    "status": false,
+    "category": "Electronics",
+    "owner":"lionel@test.com",
+    "thumbnails": [
+      "https://www.google.com.ar/imgres?q=headphones&imgurl=https%3A%2F%2Fwww.bigw.com.au%2Fmedias%2Fsys_master%2Fimages%2Fimages%2Fhad%2Fh52%2F45746666176542.jpg&imgrefurl=https%3A%2F%2Fwww.bigw.com.au%2Fproduct%2Flaser-active-noise-cancelling-wireless-headphones-black%2Fp%2F396972&docid=EmP-MSQzAtnLuM&tbnid=KNaSnT9iPve63M&vet=12ahUKEwiWu5zEr6KIAxUVR7gEHeMxAd8QM3oECDoQAA..i&w=900&h=900&hcb=2&ved=2ahUKEwiWu5zEr6KIAxUVR7gEHeMxAd8QM3oECDoQAA",
+      "sin imagen update b",
+      "sin imagen update c"
+    ],
+    "code": "abc600",
+    "stock": 500
+  },
+  {
+    "id": 13,
+    "title": "Notebook",
+    "description": "Compact and powerful, the HP Pavilion 14-inch laptop is perfect for everyday tasks and on-the-go productivity. Powered by an Intel Core i3-1125G4 processor and featuring a 14-inch Full HD display, 4GB RAM, and 128GB SSD storage, this laptop offers a great balance of performance and portability.",
+    "price": 40,
+    "status": false,
+    "category": "Electronics",
+    "owner":"lionel@test.com",
+    "thumbnails": [
+      "https://www.google.com.ar/imgres?q=notebook&imgurl=https%3A%2F%2Fwww.perozzi.com.ar%2F35623-large_default%2Fhewlett-packard-notebook-i3-1125g4-128gb-4gb-14-fhd-wind-10-silver.jpg&imgrefurl=https%3A%2F%2Fwww.perozzi.com.ar%2Fhewlett-packard-notebook-i3-1125g4-128gb-4gb-14-fhd-wind-10-silver.html&docid=I9limPnqJcWcbM&tbnid=IwTiUpfJlrbBKM&vet=12ahUKEwjC1reTsaKIAxXZlJUCHQ6EOBwQM3oECBsQAA..i&w=533&h=533&hcb=2&ved=2ahUKEwjC1reTsaKIAxXZlJUCHQ6EOBwQM3oECBsQAA",
+      "sin imagen update b",
+      "sin imagen update c"
+    ],
+    "code": "abc601",
+    "stock": 98
+  },
+  {
+    "id": 14,
+    "title": "Speaker",
+    "description": "Experience powerful sound on the go with this portable Bluetooth speaker. Featuring IPX7 waterproof protection, 25W loud stereo sound, and BassBoost technology for enhanced bass, this speaker is perfect for outdoor adventures and home entertainment. Enjoy the vibrant LED light show and seamlessly connect two speakers for TWS stereo pairing. With up to 16 hours of playtime, you can enjoy your music all day long.",
+    "price": 70,
+    "status": false,
+    "category": "Electronics",
+    "owner":"lionel@test.com",
+    "thumbnails": [
+      "https://www.google.com.ar/imgres?q=speaker&imgurl=https%3A%2F%2Fm.media-amazon.com%2Fimages%2FI%2F718yxonHN8L.jpg&imgrefurl=https%3A%2F%2Ftiendamia.com%2Far%2Fproducto%3Famz%3DB08TZP9TK7&docid=MbeEV1GmhiJjZM&tbnid=V9jG7x-MmPwXRM&vet=12ahUKEwj_0vOosqKIAxXVnpUCHesmBf4QM3oECDAQAA..i&w=1500&h=1000&hcb=2&itg=1&ved=2ahUKEwj_0vOosqKIAxXVnpUCHesmBf4QM3oECDAQAA",
+      "sin imagen update b",
+      "sin imagen update c"
+    ],
+    "code": "abc602",
+    "stock": 890
+  },
+  {
+    "id": 15,
+    "title": "Home theater",
+    "description": "Create a cinematic experience at home with our immersive home theater system",
+    "price": 250,
+    "status": false,
+    "category": "Electronics",
+    "owner":"lionel@test.com",
+    "thumbnails": [
+      "https://www.amazon.com/Klipsch-Reference-Theater-Pack-7-2-Channel/dp/B0CRWDZ9SR/ref=sr_1_4?adgrpid=84151035569&dib=eyJ2IjoiMSJ9.GB-Z64dsoQWog9spJghkqnsFnr5PqysVg1-6a5sDT2fQRz7lfYz8cXVrPoCYTle9kWkXduQ5-GDVkpWXPmBNRGJ6eOrYyaJmRSTj6hB_0A4Kz2k6Ue59rNnLu_zyLysrAN_GZlw0zax291BtJzAwTk6DoYX-htRIX2euiGqLMrc0zIvzojDBcr6GawC7fJsOw7rp4WKL2LcUlE7rrUN_T9xWu6Jsj_tjmLGaxpFfhlc.nvMfKyYljN_m5vw7No-jp86EfiyltYfuT_2s0qcD4ec&dib_tag=se&hvadid=673616298125&hvdev=c&hvlocphy=9041024&hvnetw=g&hvqmt=b&hvrand=18131961676754997185&hvtargid=kwd-10635971&hydadcr=7811_13673670&keywords=home+theater+systems&qid=1725216691&sr=8-4",
+      "sin imagen update b",
+      "sin imagen update c"
+    ],
+    "code": "abc603",
+    "stock": 125
+  },
+  {
+    "id": 16,
+    "title": "Chainsaw",
+    "description": "The Stihl MS 780 is a powerful, professional-grade chainsaw built for heavy-duty cutting tasks. Its robust design and advanced features make it a top choice for demanding forestry applications.",
+    "price": 1250,
+    "status": false,
+    "category": "Tools",
+    "owner":"lionel@test.com",
+    "thumbnails": [
+      "https://www.stihl.com.ar/content/dam/stihl/media/pim/23234.jpg.transform/StihlImageGallery-mq4/img.jpg",
+      "sin imagen update b",
+      "sin imagen update c"
+    ],
+    "code": "abc604",
+    "stock": 305
+  },
+  {
+    "id": 17,
+    "title": "Tennis shoes",
+    "description": "Designed for speed and agility, these tennis shoes offer superior cushioning and support for a powerful game.",
+    "price": 88,
+    "status": false,
+    "category": "Sports",
+    "owner":"lionel@test.com",
+    "thumbnails": [
+      "https://www.google.com/imgres?q=tennis%20shoes&imgurl=https%3A%2F%2Fm.media-amazon.com%2Fimages%2FI%2F61vU1MdBPPS._AC_SL1001_.jpg&imgrefurl=https%3A%2F%2Ftiendamia.com%2Far%2Fproducto%3Famz%3DB08B638DK7&docid=UJ94dheaOpAE4M&tbnid=ce7V4kQVgxBiCM&vet=12ahUKEwjXk4ndt6KIAxUFqpUCHR3JATwQM3oECHIQAA..i&w=953&h=875&hcb=2&itg=1&ved=2ahUKEwjXk4ndt6KIAxUFqpUCHR3JATwQM3oECHIQAA",
+      "sin imagen update b",
+      "sin imagen update c"
+    ],
+    "code": "abc605",
+    "stock": 305
+  },
+  {
+    "id": 18,
+    "title": "Golf clubs",
+    "description": "Our golf clubs offer a complete set for players of all skill levels, providing the perfect blend of distance and accuracy",
+    "price": 650,
+    "status": false,
+    "category": "Sports",
+    "owner":"lionel@test.com",
+    "thumbnails": [
+      "https://www.google.com/imgres?q=palos%20de%20golf&imgurl=http%3A%2F%2Fwww.rollygolf.com%2Fsites%2Fdefault%2Ffiles%2Fstyles%2Fimagen_articulo%2Fpublic%2Farticulos%2Ftipo_de_palo_3.jpg%3Fitok%3D8toMAMc4&imgrefurl=http%3A%2F%2Fwww.rollygolf.com%2Ftipos-palos-golf-explicacion-principiantes&docid=A2HRL21WBCG6OM&tbnid=s8gn0Vo8c1m8fM&vet=12ahUKEwiNu7aduaKIAxU8ppUCHfKYGhIQM3oECBoQAA..i&w=339&h=149&hcb=2&ved=2ahUKEwiNu7aduaKIAxU8ppUCHfKYGhIQM3oECBoQAA",
+      "sin imagen update b",
+      "sin imagen update c"
+    ],
+    "code": "abc606",
+    "stock": 305
+  },
+  {
+    "id": 19,
+    "title": "Kitchen robot",
+    "description":"The Thermomix is more than just a blender. It chops, mixes, steams, and more, all in one appliance.",
+    "price": 1250,
+    "status": false,
+    "category": "Appliances",
+    "owner":"lionel@test.com",
+    "thumbnails": [
+      "https://www.google.com/imgres?q=thermomix&imgurl=https%3A%2F%2Fmedia.vorwerk.com%2Fis%2Fimage%2Fvorwerk%2Fthermomix_TM6_standalone_back-2%3A1x1%3Fwid%3D576%26hei%3D576%26fmt%3Dpng-alpha&imgrefurl=https%3A%2F%2Fwww.vorwerk.com%2Fes%2Fes%2Fs%2Fshop%2Fthermomix-tm6&docid=U0cJoeGaJEaeOM&tbnid=4FDtR5mNvx0qhM&vet=12ahUKEwjB2KfpuaKIAxWUppUCHWDVCeYQM3oECG4QAA..i&w=576&h=576&hcb=2&ved=2ahUKEwjB2KfpuaKIAxWUppUCHWDVCeYQM3oECG4QAA",
+      "sin imagen update b",
+      "sin imagen update c"
+    ],
+    "code": "abc607",
+    "stock": 305
+  },
+  {
+    "id": 20,
+    "title": "Printer",
+    "description":"This printer offers high-speed printing, wireless connectivity, and advanced features for efficient document handling.",
+    "price": 1250,
+    "status": false,
+    "category": "Electronics",
+    "owner":"lionel@test.com",
+    "thumbnails": [
+      "https://www.google.com/imgres?q=impresora&imgurl=https%3A%2F%2Fwww.portalinsumos.com.ar%2Fwp-content%2Fuploads%2F2020%2F11%2FImpresora-Laser-Monocromatica-HP-M107w-Wifi-portal-insumos-alsina.jpg&imgrefurl=https%3A%2F%2Fwww.portalinsumos.com.ar%2Fproductos%2Fimpresora-laser-monocromatica-hp-m107w-wifi%2F&docid=_H-vGCwFF2BpAM&tbnid=YIEaZ6F77C42sM&vet=12ahUKEwjO29_QuqKIAxX2rpUCHfDFFkoQM3oECG4QAA..i&w=1200&h=739&hcb=2&ved=2ahUKEwjO29_QuqKIAxX2rpUCHfDFFkoQM3oECG4QAA",
+      "sin imagen update b",
+      "sin imagen update c"
+    ],
+    "code": "abc608",
+    "stock": 305
+  }
 ]

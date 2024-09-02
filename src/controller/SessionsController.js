@@ -16,19 +16,6 @@ export class SessionsController {
   };
 
   static login = async (req, res) => {
-    let { web } = req.body;
-    let user = { ...req.user };
-    delete user.password;
-    req.session.user = user;
-    if (web) {
-      res.redirect("/profile");
-    } else {
-      res.setHeader("Content-Type", "application/json");
-      return res.status(200).json({ payload: "Successful Login...!!!", user });
-    }
-  };
-
-  static login = async (req, res) => {
     let { email, password, loginStrategy } = req.body;
     if (!email || !password) {
       res.setHeader("Content-Type", "application/json");
@@ -232,7 +219,7 @@ export class SessionsController {
       return res.status(200).json({ userSessions, userJWT });
     } catch (error) {
         let errorData = {
-        title: "gitHub authentification error",
+        title: "Logged users error",
         name: error.name,
         message: error.message,
         stack: error.stack,
