@@ -1,12 +1,8 @@
-// import { CartManagerMONGO as CartManager } from "../dao/CartManagerMONGO.js";
 import { cartService } from "../services/CartService.js";
-//import { ProductManagerMONGO as ProductManager } from "../dao/ProductManagerMONGO.js";
 import { productService } from "../services/ProductService.js";
 import { isValidObjectId } from "mongoose";
 import { customLogger } from "../utils.js";
 
-// const cartManager = new CartManager();
-// let productManager = new ProductManager(); // Revisar cartRouter. let productManager = new ProductManager(join(__dirname, "data", "products.json"));   Esta asi porque viene de persistencia en memoria?
 
 export class CartController {
   static getAllCarts = async (req, res) => {

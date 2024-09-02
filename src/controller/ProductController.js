@@ -1,23 +1,7 @@
-// import { ProductManagerMONGO as ProductManager } from "../dao/ProductManagerMONGO.js";
 import { productService } from "../services/ProductService.js";
 import { isValidObjectId } from "mongoose";
 import { validationProducts } from "../utils/validation.js";
 import { config } from "../../src/config/config.js";
-
-///import { io } from "../app.js";                                       // Revisar - porque no lo esta exportando?
-
-// Instanciates                                                         // Para la persistencia en FS?
-// let productManager = new ProductManager(
-//    join(__dirname, "data", "products.json")
-// );
-
-// Loads Products
-// async function loadProducts() {                                        // Para la persistencia en FS?
-//   await productManager.init();
-// }
-// loadProducts();
-
-// let productManager = new ProductManager();
 
 export class ProductController {
   static getProducts = async (req, res) => {
