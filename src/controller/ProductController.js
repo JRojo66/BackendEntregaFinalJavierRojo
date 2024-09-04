@@ -6,7 +6,7 @@ import { config } from "../../src/config/config.js";
 export class ProductController {
   static getProducts = async (req, res) => {
     let pquery;
-    let limit = 10;
+    let limit = 100;
     let page = 1;
     let query = {};
     let sort = {};
