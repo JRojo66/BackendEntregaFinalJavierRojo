@@ -2,8 +2,8 @@ import mongoose from "mongoose";
 
 const chatCollection = "chat";
 const chatSchema = new mongoose.Schema({
-    chatUser: String,
-    chatMessage: String,
+    chatName: String,
+    message: String,
 },
 {
     timestamps: true,

@@ -1,6 +1,7 @@
 import { Router } from "express";
 import passport from "passport";
 import { SessionsController } from "../controller/SessionsController.js";
+import loginLimiter from "../middleware/rateLimiter.js";
 
 export const router = Router();
 
@@ -11,21 +12,11 @@ router.post(
   SessionsController.register
 );
 router.post(
-  "/login",
+  "/login",loginLimiter,
   passport.authenticate("login", { failureRedirect: "/api/sessions/error" }),
   SessionsController.login
 );
 router.post("/passwordReset", SessionsController.passwordReset);
 router.get("/error", SessionsController.error);
-router.get(
-  "/login/github",
-  passport.authenticate("github", {}),
-  SessionsController.loginGitHub
-);
-router.get(
-  "/callBackGithub",
-  passport.authenticate("github", { failureRedirect: "/api/sessions/error" }),
-  SessionsController.callBackGitHub
-);
 router.get("/logout", SessionsController.logout);
 router.get("/current", SessionsController.current);

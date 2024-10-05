@@ -6,44 +6,21 @@ import MongoStore from "connect-mongo";
 import { Server } from "socket.io";
 import { __dirname, middLogger, customLogger } from "./utils.js";
 import { join } from "path";
-import { router as productsRouter } from "./routes/productsRouter.js";
-import { router as cartRouter } from "./routes/cartRouter.js";
 import { router as viewsRouter } from "./routes/views.Router.js";
 import { router as sessionRouter } from "./routes/sessionRouter.js";
 import {router as passwordResetRouter} from "./routes/passwordResetRouter.js";
-import {router as usersRouter} from "./routes/usersRouter.js";
 import passport from "passport";  
 import { initPassport } from "./config/passport.config.js";
 import cookieParser from "cookie-parser";
 import { config } from "./config/config.js";
 import { chatService } from "./services/chatService.js";
 import { errorHandler } from "./middleware/Errorhandler.js";
-import swaggerJsDoc from "swagger-jsdoc";
-import swaggerUI from "swagger-ui-express";
+import cron from 'node-cron';
 
 const PORT = config.PORT;
 
 const app = express();
 let io;
-
-// Documentation - Swagger
-// Define object with parameters for swagger
-const options={
-  definition:{
-      openapi: "3.0.0",
-      info:{
-          title:"Rojozon Backend",
-          version: "1.0.0",
-          description:"Rojozon e-commerce website documentation"
-      },
-  },
-  apis: ["./src/docs/*.yaml"]
-}
-
-const spec = swaggerJsDoc(options);
-app.use("/api-docs",swaggerUI.serve, swaggerUI.setup(spec));
-// end swagger
-
 
 app.use(express.static(__dirname + "/public"));
 app.use(express.json());
@@ -74,19 +51,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use("/", viewsRouter);
-app.use(
-  "/api/products",
-  (req, res, next) => {
-    req.serverSocket = io;
-    next();
-  },
-  productsRouter
-);
-app.use("/api/cart", cartRouter);
 app.use("/api/sessions", sessionRouter);
 app.use("/api/passwordReset",passwordResetRouter);
-app.use("/api/users",usersRouter)
-
 
 app.use(errorHandler);
 
@@ -102,9 +68,16 @@ io = new Server(server);
 
 io.on("connection", (socket) => {
   console.log(`Client id ${socket.id} connected...!!!`);
-  socket.on("id", (chatName) => {
+
+  socket.on("id", async (chatName) => {
+    let existingMessages;
+    try {
+      existingMessages = await chatService.getMessages();
+    } catch (error) {
+      console.error("Error retrieving messages:", error);
+    }
     chatUsers.push({ id: socket.id, chatName });
-    socket.emit("previousMessages", messages);
+    socket.emit("previousMessages", existingMessages);
     socket.broadcast.emit("New User", chatName);
   });
   socket.on("message", (chatName, message) => {
@@ -128,6 +101,15 @@ const connDB = async () => {
       dbName: config.DB_NAME,
     });
     customLogger.debug("DB Online...!!!");
+    cron.schedule('0 3 * * *', async () => {  // 'runs 3 am every day '*/5 * * * *' would run every 5 minutes
+      let expireDate = new Date();
+      //expireDate.setDate(expireDate.getDate() - 7); // Expire date 7 days
+      expireDate.setMinutes(expireDate.getMinutes() - 2); // Expire date 2 minutes
+      console.log("expireDate: ", expireDate);
+        await chatService.deleteOldMessages(expireDate);
+        customLogger.debug("Old chat messages deleted successfully");
+      });
+
   } catch (error) {
     let errorData = {
       title: "Error connecting to DB ",

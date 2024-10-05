@@ -16,30 +16,27 @@ export class SessionsController {
   };
 
   static login = async (req, res) => {
-    let { email, password, loginStrategy } = req.body;
-    if (!email || !password) {
+    let { name, password, loginStrategy } = req.body;
+    if (!name || !password) {
       res.setHeader("Content-Type", "application/json");
-      return res.status(400).json({ payload: "Enter email and password" });
+      return res.status(400).json({ payload: "Enter name and password" });
     }
     try {
-      let user = await userService.getUsersBy({ email });
+      let user = await userService.getUsersBy({ name });
       if (!user)
         return res
           .status(400)
-          .send(`Wrong credentials...There is no user with that mail...!!!`);
+          .send(`Wrong credentials...There is no user with that name...!!!`);
       user = new UserDTO(user);
       user = { ...user };
       let token = jwt.sign(user, SECRET, { expiresIn: "1h" });
-      res.cookie("codercookie", token, { httpOnly: true });
+      res.cookie("codercookie", token, { httpOnly: false });
       await userService.updateUser(
-        { email },
+        { name },
         { loginStrategy },
         { last_connection: new Date() }
       );
-      return res.status(200).json({
-        userLogged: user,
-        token,
-      });
+      res.redirect("/chat");
     } catch (error) {
       let errorData = {
         title: "Error logging in",
@@ -157,66 +154,16 @@ export class SessionsController {
 
   static error = (req, res) => {
     res.setHeader("Content-Type", "application/json");
-    let errorData = {
-      title: "Authentification error",
-      name: error.name,
-      message: error.message,
-      stack: error.stack,
-    };
-    customLogger.error(JSON.stringify(errorData, null, 5));
-    return res.status(500).json({
-      error: `Unexpected server error - Try again later or contact admninistrator`,
-      detail: `Authentication error...!!!`,
-    });
+    res.redirect(('/?error=Wrong Credentials - Access will be blocked after 10 failed tries'));
   };
-
-  static loginGitHub = (req, res) => {
-    async (req, res) => {
-      delete user.password;
-      req.session.user = user;
-      res.setHeader("Content-Type", "application/json");
-      return res.status(200).json({ payload: "Successful Login...!!!", user });
-    };
-  };
-
-  static callBackGitHub = async (req, res) => {
-    const email = req.user.email;
-    req.user.loginStrategy = "gitHub";
-    try{
-    const u = await userService.updateUser(
-      { email },
-      { loginStrategy: "gitHub" }
-    );
-    req.session.user = req.user;
-    res.setHeader("Content-Type", "application/json");
-    return res.status(200).json({ payload: req.user });
-  } catch(error){
-      let errorData = {
-        title: "gitHub authentification error",
-        name: error.name,
-        message: error.message,
-        stack: error.stack,
-      };
-      customLogger.error(JSON.stringify(errorData, null, 5));
-      return res.status(500).json({
-        error: `Unexpected server error - Try again later or contact admninistrator`,
-        detail: `Authentication error...!!!`,
-      });
-  };
-  }; 
 
   static current = (req, res) => {
-    let userSessions = req.session.user;
-    userSessions = new UserDTO(userSessions);
-    if (!userSessions) {
-      userSessions = "No sessions users logged";
-    }
     let token = req.cookies["codercookie"];
     try {
       let userJWT = jwt.verify(token, SECRET);
       userJWT = new UserDTO(userJWT);
       res.setHeader("Content-Type", "application/json");
-      return res.status(200).json({ userSessions, userJWT });
+      return res.status(200).json({ userJWT });
     } catch (error) {
         let errorData = {
         title: "Logged users error",
@@ -224,103 +171,9 @@ export class SessionsController {
         message: error.message,
         stack: error.stack,
         };
-        customLogger.error(JSON.stringify(errorData, null, 5));
       res.setHeader("Content-Type", "application/json");
-      return res.status(401).json({ userJWT: `${error}`, userSessions });
+      return res.status(401).json({ userJWT: `${error}`});
     }
   };
 
-  static premium = async (req, res) => {
-    try {
-      let uid = req.params.uid;
-      let user = await userService.getUsersBy({ _id: uid });
-      if (user.role === "premium") {
-        await userService.updateUser({ _id: uid }, { role: "user" });
-        res.setHeader("Content-Type", "application/json");
-        return res
-          .status(200)
-          .json({ payload: `User ${user.email} is now user` });
-      }
-      if (
-        user.role === "user" &&
-        user.documents[0].reference !== "" &&
-        user.documents[1].reference !== "" &&
-        user.documents[2].reference !== ""
-      ) {
-        await userService.updateUser({ _id: uid }, { role: "premium" });
-        res.setHeader("Content-Type", "application/json");
-        return res
-          .status(200)
-          .json({ payload: `User ${user.email} is now premium` });
-      } else {
-        res.setHeader("Content-Type", "application/json");
-        return res.status(400).json({
-          error: `Role is not premium nor user or missing or incomplete documents...!!!`,
-        });
-      }
-    } catch (error) {
-      let errorData = {
-        title: "error toggling roles",
-        name: error.name,
-        message: error.message,
-        stack: error.stack,
-        };
-        customLogger.error(JSON.stringify(errorData, null, 5));
-      res.setHeader("Content-Type", "application/json");
-      return res.status(500).json({
-        error: `Unexpected server error - contact your administrator`,
-      });
-    }
-  };
-
-  static addDocument = async (req, res) => {
-    let userId;
-    if (!req.fileDoc) {
-      res.setHeader("Content-Type", "application/json");
-      return res.status(400).json({ error: `Choose file and try again...!!!` });
-    }
-    if ((req.params.uid = "web")) {
-      userId = req.user._id;
-    } else {
-      userId = req.params.uid;
-    }
-    const reference = req.fileSavedPath + "/" + req.fileSavedName;
-    try {
-    
-      const user = await userService.getUsersBy({ _id: userId });
-      let documents = user.documents;
-      switch (req.fileDoc) {
-        case "profile":
-          break;
-        case "product":
-          break;
-        case "identification":
-          documents[0].reference = reference;
-          break;
-        case "addressProof":
-          documents[1].reference = reference;
-          break;
-        case "bankStatement":
-          documents[2].reference = reference;
-
-          break;
-        default:
-      }
-      await userService.updateUser({ _id: userId }, { documents });
-    } catch (error) {
-      let errorData = {
-        title: "error attaching documents",
-        name: error.name,
-        message: error.message,
-        stack: error.stack,
-        };
-        customLogger.error(JSON.stringify(errorData, null, 5));
-      res.setHeader("Content-Type", "application/json");
-      return res.status(500).json({
-        error: `Unexpected server error - contact your administrator`,
-      });
-    }
-    res.setHeader("Content-Type", "application/json");
-    return res.status(200).json({ payload: "File saved...!!!" });
-  };
 }

@@ -76,3 +76,53 @@
 {"level":"error","message":"{\n     \"title\": \"Error deleting product in cart in the database\",\n     \"name\": \"ReferenceError\",\n     \"message\": \"lalala is not defined\",\n     \"stack\": \"ReferenceError: lalala is not defined\\n    at deleteProduct (file:///C:/Documents/Docus/Documents/Nueva_etapa/IT/Coderhouse/Backend/EntregaFinal/src/controller/CartController.js:286:22)\\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\"\n}"}
 {"level":"error","message":"{\n     \"title\": \"Error deleting product in cart in the database\",\n     \"name\": \"ReferenceError\",\n     \"message\": \"lalala is not defined\",\n     \"stack\": \"ReferenceError: lalala is not defined\\n    at deleteProduct (file:///C:/Documents/Docus/Documents/Nueva_etapa/IT/Coderhouse/Backend/EntregaFinal/src/controller/CartController.js:286:22)\\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\"\n}"}
 {"level":"error","message":"Expected double-quoted property name in JSON at position 58"}
+{"level":"error","message":"customLogger is not defined"}
+{"level":"error","message":"customLogger is not defined"}
+{"level":"error","message":"newCart is not defined"}
+{"level":"error","message":"error is not defined"}
+{"level":"error","message":"error is not defined"}
+{"level":"error","message":"error is not defined"}
+{"level":"error","message":"error is not defined"}
+{"level":"error","message":"users validation failed: password: Path `password` is required., name: Path `name` is required."}
+{"level":"error","message":"users validation failed: password: Path `password` is required., name: Path `name` is required."}
+{"level":"error","message":"users validation failed: password: Path `password` is required., name: Path `name` is required."}
+{"level":"error","message":"users validation failed: password: Path `password` is required., name: Path `name` is required."}
+{"level":"error","message":"users validation failed: name: Path `name` is required."}
+{"level":"error","message":"error is not defined"}
+{"level":"error","message":"error is not defined"}
+{"level":"error","message":"error is not defined"}
+{"level":"error","message":"error is not defined"}
+{"level":"error","message":"error is not defined"}
+{"level":"error","message":"error is not defined"}
+{"level":"error","message":"error is not defined"}
+{"level":"error","message":"error is not defined"}
+{"level":"error","message":"error is not defined"}
+{"level":"error","message":"error is not defined"}
+{"level":"error","message":"error is not defined"}
+{"level":"error","message":"error is not defined"}
+{"level":"error","message":"error is not defined"}
+{"level":"error","message":"error is not defined"}
+{"level":"error","message":"error is not defined"}
+{"level":"error","message":"error is not defined"}
+{"level":"error","message":"error is not defined"}
+{"level":"error","message":"error is not defined"}
+{"level":"error","message":"error is not defined"}
+{"level":"error","message":"error is not defined"}
+{"level":"error","message":"error is not defined"}
+{"level":"error","message":"error is not defined"}
+{"level":"error","message":"error is not defined"}
+{"level":"error","message":"error is not defined"}
+{"level":"error","message":"error is not defined"}
+{"level":"error","message":"error is not defined"}
+{"level":"error","message":"error is not defined"}
+{"level":"error","message":"error is not defined"}
+{"level":"error","message":"error is not defined"}
+{"level":"error","message":"error is not defined"}
+{"level":"error","message":"error is not defined"}
+{"level":"error","message":"error is not defined"}
+{"level":"error","message":"Invalid status code: { error: 'wrong credentials' }"}
+{"level":"error","message":"Invalid status code: { error: [Object] }"}
+{"level":"error","message":"error is not defined"}
+{"level":"error","message":"error is not defined"}
+{"level":"error","message":"{\n     \"title\": \"Error connecting to DB \",\n     \"name\": \"Error\",\n     \"message\": \"querySrv ETIMEOUT _mongodb._tcp.jr.rdtaukg.mongodb.net\",\n     \"stack\": \"Error: querySrv ETIMEOUT _mongodb._tcp.jr.rdtaukg.mongodb.net\\n    at QueryReqWrap.onresolve [as oncomplete] (node:internal/dns/promises:291:17)\"\n}"}
+{"level":"error","message":"{\n     \"title\": \"Error connecting to DB \",\n     \"name\": \"ReferenceError\",\n     \"message\": \"expireDate is not defined\",\n     \"stack\": \"ReferenceError: expireDate is not defined\\n    at connDB (file:///C:/Documents/Docus/Documents/Nueva_etapa/IT/Coderhouse/Backend/Chat2/src/app.js:105:33)\\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\"\n}"}

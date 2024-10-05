@@ -3,42 +3,16 @@ import mongoose from "mongoose";
 const usersCollection = "users";
 const usersSchema = new mongoose.Schema(
   {
-    name: String,
-    lastName: String,
-    email: {
+    name: {
       type: String,
       unique: true,
-      required: true,
+      required: true
     },
-    age: Number,
     password: String,
     last_connection: Date,
     role: {
       type: String,
       default: "user",
-    },
-    cart: {
-      type: mongoose.Types.ObjectId,
-      ref: "cart",
-    },
-    documents: {
-        type: [{
-            name: String,
-            reference: String
-          },
-        ],
-        default: [{
-          name:"identificacion",
-          reference:""},
-          {
-          name:"comprobanteDeDomicilio",
-          reference:""
-          },
-          {
-          name:"combrobanteDeEstadoDeCuenta",
-          reference:""
-          },
-        ]
     },
     loginStrategy: {
       type: String,

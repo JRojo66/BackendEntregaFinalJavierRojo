@@ -1,10 +1,8 @@
 import passport from "passport";
 import local from "passport-local";
-import github from "passport-github2";
 import passportJWT from "passport-jwt";
 import { SECRET, generateHash, isValidPassword } from "../utils.js";
 import { userService } from "../services/UserService.js";
-import { cartService } from "../services/CartService.js";
 import { UserDTO, UserDTOfirstLettertoUpperCase } from "../dto/userDTO.js";
 
 const extractToken = (req) => {
@@ -20,18 +18,17 @@ export const initPassport = () => {
     "register",
     new local.Strategy(
       {
-        usernameField: "email",
+        usernameField: "name",
         passReqToCallback: true,
       },
       async (req, username, password, done) => {
         try {
           let { name, lastName, age } = req.body;
-          let exists = await userService.getUsersBy({ email: username });
+          let exists = await userService.getUsersBy({ name: username });
           if (exists) {
             return done(null, false);
           }
           password = generateHash(password);
-          let newCart = await cartService.addCart();
           let newUser = {
             name,
             lastName,
@@ -39,7 +36,6 @@ export const initPassport = () => {
             age,
             password,
             last_connection: new Date(),
-            cart: newCart._id,
           };
           newUser = new UserDTOfirstLettertoUpperCase(newUser); // Forces name and lastname's first character to uppercase
           newUser = await userService.createUser(newUser);
@@ -57,50 +53,16 @@ export const initPassport = () => {
     "login",
     new local.Strategy(
       {
-        usernameField: "email",
+        usernameField: "name",
       },
       async (username, password, done) => {
         try {
-          let user = await userService.getUsersBy({ email: username });
+          let user = await userService.getUsersBy({ name: username });
           if (!user || !user.password) {
             return done(null, false);
           }
           if (!isValidPassword(password, user.password)) {
             return done(null, false);
-          }
-
-          return done(null, user);
-        } catch (error) {
-          return done(error);
-        }
-      }
-    )
-  );
-
-  passport.use(
-    "github",
-    new github.Strategy(
-      {
-        clientID: "Iv23lilw42OZu4xXKicA",
-        clientSecret: "22bca2a20c3dda4b5b5b9ca2d19ac00275eb297b",
-        callbackURL: "/api/sessions/callBackGithub",
-      },
-      async (accessToken, refreshToken, profile, done) => {
-        try {
-          let name = profile._json.name;
-          let email = profile._json.email;
-          if (!name || !email) {
-            return done(null, false);
-          }
-          let user = await userService.getUsersBy({ email });
-          if (!user) {
-            let newCart = await cartService.addCart();
-            user = await userService.createUser({
-              name,
-              email,
-              profile,
-              cart: newCart._id,
-            });
           }
           return done(null, user);
         } catch (error) {

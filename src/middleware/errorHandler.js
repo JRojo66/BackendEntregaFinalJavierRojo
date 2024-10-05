@@ -13,7 +13,7 @@ export const errorHandler = (error, req, res, next) => {
 
     default:
       res.setHeader("Content-Type", "application/json");
-      return res.status(500).json({ error: `Error: Contact admnistrator...` });
+      return res.status(500).json({ error: `Error: Contact admnistrator xxx...` });
       break;
   }
 };

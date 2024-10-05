@@ -1,16 +1,18 @@
-<h2>Login</h2>
-<hr>
+<div class="background-class">
+    <br><br><br><br>
 <form action="api/sessions/login" method="post">
-
+    <div class="name">
+    <input  type="text" name="name" placeholder="name">
+    <input type="password" name="password" placeholder="password">
+    <input type="text" name="loginStrategy" value="jwt" hidden>
+    <br><br>
+    <input class="login" type="submit" value="Login">
     {{#if error}}
         <div style="font-weight: bolder; color: red;">{{error}}</div>        
     {{/if}}
-    <input type="text" name="email" placeholder="email">
-    <input type="password" name="password" placeholder="password">
-    <input type="text" name="web" value="web" hidden>
-    <input type="text" name="loginStrategy" value="jwt" hidden>
-    <br><br>
-    <input type="submit" value="Login">
+    </div>
 </form>
 <br><br>
-{{>menu}}
+</div>
+
+

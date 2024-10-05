@@ -1,6 +1,26 @@
-body {
+.background-class {
+  background-image: url("https://images.unsplash.com/photo-1726165534077-23c397b32d46?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+  background-size: cover;
+  background-position: center;
+  height: 100vh; /* Para que ocupe toda la pantalla */
+  text-align: center;
+}
+
+.name{
+  display: inline-block;
+  text-align: center;
+  margin: 0 auto;
+  width: 30%;
+}
+
+.login{
+  width: 20%;
+  background-color: white;
+}
+ 
+ body {
   background-color: #f2f2f2;
-  font-family: Arial, sans-serif;
+  font-family: Arial, sans-serif; 
 }
 
 h2 {
@@ -29,15 +49,17 @@ input[type="text"], input[type="email"], input[type="password"], input[type="sub
   margin: 10px 0;
   padding: 10px;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 10px;
   width: 100%;
   box-sizing: border-box;
 }
 
 input[type="submit"] {
-  background-color: #333;
-  color: #fff;
+  background-color: white;
+  color: black;
+  font-weight: 600;
   cursor: pointer;
+  width: 100%;
 }
 
 input[type="file"][name="imagen"] {
@@ -97,13 +119,25 @@ ul li {
 
 #messages{
   margin-top: 15px;
-  width: 90%;
+  width: 88%;
+  margin-left: 2%;
   height: 350px;
   overflow-y: scroll;
   box-shadow: 0px 0px 5px #333 inset;
   padding: 5px;
   background-color: cadetblue;
 }
+
+#message{
+  width: 87%;
+  border: 1px solid #555;
+  border-radius: 5px;
+  padding: 5px;
+  margin-left: 2%;
+  background-color: white;
+  display: inline-block;
+  margin-top: 5px;
+} 
 
 .message{
   width: 90%;
@@ -113,4 +147,28 @@ ul li {
   background-color: wheat;
   display: inline-block;
   margin-top: 5px;
+}
+
+/* Alinear el contenedor en la misma línea */
+.header {
+  width: 89%;
+  display: flex;
+  justify-content: space-between; /* Empuja el enlace a la derecha */
+  padding-left: 2%;
+  align-items: center; /* Centra el enlace verticalmente */
+}
+
+/* Estilos para el enlace, para que parezca un botón */
+.change-password-btn {
+  padding: 8px 16px;
+  background-color: cadetblue; /* Color azul tipo botón */
+  color: white; /* Texto en blanco */
+  text-decoration: none; /* Quita el subrayado */
+  border-radius: 5px; /* Bordes redondeados */
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.change-password-btn:hover {
+  background-color: #007bff; /* Cambia el color al pasar el mouse */
 }

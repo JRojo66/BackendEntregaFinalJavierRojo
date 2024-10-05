@@ -6,7 +6,6 @@ export class PasswordResetController {
   static pwr = async (req, res) => {
     try {
       const { token, newPassword } = req.body;
-
       let decoded = jwt.verify(token, SECRET);
       const email = decoded.email;
       const uid = decoded._id;

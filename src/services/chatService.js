@@ -6,7 +6,13 @@ class ChatService {
   }
   addMessage = async (chatName, message) => {
     return this.dao.addMessage(chatName, message);
-  };
+  };  
+  getMessages = async () => {
+    return this.dao.getMessages();
+  }
+  deleteOldMessages = async (expireDate) => {
+    return this.dao.deleteOldMessages(expireDate);
+  }
 }
 
 export const chatService = new ChatService(new ChatDao());
