@@ -103,8 +103,8 @@ const connDB = async () => {
     customLogger.debug("DB Online...!!!");
     cron.schedule('0 3 * * *', async () => {  // 'runs 3 am every day '*/5 * * * *' would run every 5 minutes
       let expireDate = new Date();
-      //expireDate.setDate(expireDate.getDate() - 7); // Expire date 7 days
-      expireDate.setMinutes(expireDate.getMinutes() - 2); // Expire date 2 minutes
+      expireDate.setDate(expireDate.getDate() - 7); // Expire date 7 days
+      //expireDate.setMinutes(expireDate.getMinutes() - 2); // Expire date 2 minutes (for testing)
       console.log("expireDate: ", expireDate);
         await chatService.deleteOldMessages(expireDate);
         customLogger.debug("Old chat messages deleted successfully");
